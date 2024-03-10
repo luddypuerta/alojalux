@@ -1,0 +1,32 @@
+.hotels-page {
+
+    &__button-add {
+        background-color: #1677FF;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    &__table{
+
+        & .ant-table-container {
+
+            .ant-table-cell {
+                border-bottom: 1px solid #E9E1E1;
+               
+                &:last-child {
+                    text-align: center;
+                }
+            }
+
+        }
+        
+        &__container-buttons {
+            justify-content: space-evenly;
+            display: flex;
+        }
+
+        &__button-actions{
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+h1{
+    font-weight: bold;
+    font-family: 'Blue Sans';
+}
+
+.box-shadow {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.typography-valid {
+    color: #4E9334
+}
+
+.typography-invalid {
+    color: #E50000;
+}
+
+.typography-null {
+    color: #35334C
+}

@@ -1,0 +1,21 @@
+.header-component{
+    justify-content: space-between;
+    align-items: center;
+
+    &__logo{
+        width: 100px;
+    }
+    &__login {
+        padding: 10px;
+        cursor: pointer;
+        
+        &__icon-profile {
+            margin-right: 5px;
+        }
+        &:hover{
+            background: #D8D8D9;
+            border-radius: 10px;
+        }
+    }
+    
+}

@@ -1,0 +1,150 @@
+.home-page {
+
+    &__background {
+        position: relative;
+        width: 100%;
+        height: 400px;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+    &__text {
+        position: absolute;
+        top: 50%;
+        left: 34%;
+        transform: translate(-50%, -50%);
+        color: white;
+
+        h1 {
+            font-weight: bold;
+            font-family: 'Blue Sans';
+        }
+        h3 {
+            font-family: 'Blue Sans';
+        }
+    }
+    &__container-search {
+        background: #FFFFFF;
+        position: absolute;
+        bottom: -27px;
+        width: 80%;
+        left: 10%;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        background-color: #113450;
+        padding: 5px;
+        z-index: 1;
+
+        & .ant-select-show-search{
+            height: 51px;
+            width: 98%;
+        }
+    }
+    &__search-hotel {
+        width: 100%;
+
+        & .ant-picker{
+            height: 50px;
+            width: 98%;
+        }
+    }
+    &__input-search {
+
+        & .ant-input{
+            background: #FFFFFF;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        & .ant-input-search-button{
+            height: 50px;
+        }
+    }
+    &__panel-visibility {
+        background: #FFFFFF;
+        height: 50px;
+        border-radius: 5px;
+        width: 98%;
+        overflow: hidden; 
+        white-space: nowrap;
+        text-overflow: ellipsis; 
+        text-align: left;
+        padding: 10px;
+        cursor: pointer;
+
+        &__icon-user{
+            font-size: 21px;
+            width: 25px;
+        }
+    }
+    &__button-search{
+        background-color: #1677FF;
+        margin: 0;
+        width: 98%;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    &__panel-search {
+        position: relative;
+    }
+    &__selection-panel {
+        position: absolute;
+        z-index: 1;
+        top: 4rem;
+        background: #FFFFFF;
+        width: 100%;
+        border-radius: 10px;
+        padding: 24px 32px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: height 0.3s ease-in-out;
+        
+        &__container-element {
+            margin-bottom: 10px;
+        }
+
+        &__button-control {
+            border-radius: 50%;
+            border-color: #007cc2;
+        }
+
+        &__number-field {
+            width: 80%;
+
+            & .ant-input-number-input{
+                text-align: center;
+            }
+        }
+        &__title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        & .ant-select.ant-select-outlined{
+            width: 95%;
+        }
+        &__button-ready{
+            background-color: #1677FF;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+    
+}
+
+//Media Screen max-width -1023
+
+@media screen and (max-width: 1023px) {
+    .home-page {
+        &__background {
+            height: 700px;
+        }
+    }
+}

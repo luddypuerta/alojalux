@@ -1,0 +1,32 @@
+# Ignore automatically generated files and folders
+node_modules/
+dist/
+.cache/
+.build/
+.env
+
+# Ignore IDE and editor configuration files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore package dependency files (e.g., yarn.lock, package-lock.json)
+yarn.lock
+package-lock.json
+
+# Ignore backup and temporary files
+*.bak
+*.log
+*.tmp
+
+# Ignore build files
+*.js.map
+*.d.ts
+
+# Ignore specific package files (add more as needed)
+# Example to ignore TypeScript configuration files
+tsconfig.json
+
+# Ignore macOS .DS_Store files
+.DS_Store
