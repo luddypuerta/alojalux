@@ -1,0 +1,40 @@
+.login-drawer {
+
+    & .ant-drawer-close {
+        color: #3498db;
+    }
+    & .ant-drawer-title {
+        font-size: 22px;
+        color: #3498db;
+        text-align: center;
+    }
+    &__form {
+        & .ant-form-item {
+            width: 100%;
+            margin-bottom: 20px;
+            
+            &-row {
+                width: 100%;
+                display: inline-block;
+            }
+            &-label {
+                text-align: left;
+                > label {
+                    font-weight: bold;
+                    color: #34495E;
+                }
+            }
+        }
+
+        & .ant-form-item-control-input {
+            text-align: center;
+
+            & .ant-input {
+                font-size: 14px;
+                color: #34495e;
+                border-radius: 5px;
+                margin-bottom: 0;
+            }
+        }
+    }
+}

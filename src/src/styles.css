@@ -18,3 +18,7 @@ h1{
 .typography-null {
     color: #35334C
 }
+button.ant-btn-primary {
+    border-radius: 10px;
+    height: 35px;
+}

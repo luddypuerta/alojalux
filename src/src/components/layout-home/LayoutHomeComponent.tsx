@@ -1,4 +1,7 @@
+//Libraries
 import React from 'react';
+
+//Components
 import HeaderHomeComponent from './HeaderHome/HeaderHomeComponent';
 
 interface LayoutProps {

@@ -1,36 +1,34 @@
 //Assets
-import imageBackground from '@assets/images/hotel-alojalux.jpeg';
-import imageBarcelona from '@assets/images/tourism-barcelona.jpeg';
-import imageCartagena from '@assets/images/tourism-cartagena.webp';
-import imageMadrid from '@assets/images/tourism-madrid.webp';
-import imageMedellin from '@assets/images/tourism-medellin.jpeg';
-import imageNewyork from '@assets/images/tourism-newyork.webp';
-import imageSanandres from '@assets/images/tourism-sanandres.jpeg';
-import imageSantamarta from '@assets/images/tourism-santamarta.jpeg';
-import imageValledupar from '@assets/images/tourism-valledupar.jpeg';
+import imageBackground from '@assets/images/hotels/hotel-alojalux.jpeg';
+import imageBarcelona from '@assets/images/tourism/tourism-barcelona.jpeg';
+import imageCartagena from '@assets/images/tourism/tourism-cartagena.webp';
+import imageMadrid from '@assets/images/tourism/tourism-madrid.webp';
+import imageMedellin from '@assets/images/tourism/tourism-medellin.jpeg';
+import imageNewyork from '@assets/images/tourism/tourism-newyork.webp';
+import imageSanandres from '@assets/images/tourism/tourism-sanandres.jpeg';
+import imageSantamarta from '@assets/images/tourism/tourism-santamarta.jpeg';
+import imageValledupar from '@assets/images/tourism/tourism-valledupar.jpeg';
 
 //Components
 import LayoutHomeComponent from '../../components/layout-home/LayoutHomeComponent';
 import SwipeableCardsComponent from './components/SwipeableCardsComponent';
+import DescriptiveCardsComponent from './components/target/DescriptiveCardsComponent';
 
 //Libraries
-import React from 'react';
-import { ConfigProvider, DatePicker, InputNumber, Button, Select, Input, AutoComplete } from 'antd';
+import React, { useEffect } from 'react';
+import { ConfigProvider, DatePicker, InputNumber, Button, Select, Input, AutoComplete, Spin } from 'antd';
 import { useState } from 'react';
 import esES from 'antd/lib/locale/es_ES';
 import { BankOutlined, UserOutlined } from '@ant-design/icons';
+import { FaArrowLeft } from 'react-icons/fa';
 
 //Styles
 import "./HomePage.scss";
 
-interface HomePageProps {
-  
-}
-
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-const HomePage: React.FC<HomePageProps> = () => {
+const HomePage: React.FC = () => {
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [searchText, setSearchText] = useState<string>('');
@@ -43,6 +41,8 @@ const HomePage: React.FC<HomePageProps> = () => {
         'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué',
     ]);
     const [originalCities] = useState<string[]>(cities);
+    const [isSearch, setIsSearch] = useState<boolean>(false);
+    const [isResult, setIsResult] = useState<boolean>(false);
     const MAX_CHILD_AGE = 17;
     const childAgeOptions = Array.from({ length: MAX_CHILD_AGE + 1 }, (_, i) => i);
     const cards = [
@@ -68,7 +68,7 @@ const HomePage: React.FC<HomePageProps> = () => {
         setNumRooms(prevNumRooms => prevNumRooms + 1);
     };
 
-    const removeRoom= () => {
+    const removeRoom = () => {
         setNumRooms(prevNumRooms => Math.max(prevNumRooms - 1, 0));
     };
 
@@ -121,7 +121,7 @@ const HomePage: React.FC<HomePageProps> = () => {
     };
 
     const searchCity = (value: string) => {
-        
+
         setSearchText(value);
         const filteredCities = originalCities.filter(city =>
             city.toLowerCase().includes(value.toLowerCase())
@@ -133,6 +133,19 @@ const HomePage: React.FC<HomePageProps> = () => {
         setSearchText(value);
     };
 
+    const searchAccommodation = () => {
+        setIsSearch(prev => !prev);
+    };
+
+    useEffect(() => {
+        if (isSearch) {
+            setTimeout(() => {
+                setIsSearch(prev => !prev)
+                setIsResult(true)
+            }, 1500);
+        }
+
+    }, [isSearch])
 
     return (
         <LayoutHomeComponent>
@@ -152,6 +165,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                                     options={cities.map(city => ({ value: city }))}
                                     onSelect={selectCity}
                                     onSearch={searchCity}
+                                    className='home-page__autocomplete'
                                 >
                                     <Input.Search className='home-page__input-search' placeholder="¿A dónde vas?" enterButton={<BankOutlined />} />
                                 </AutoComplete>
@@ -170,7 +184,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                                         <span> {numChildren} niños </span>
                                     </button>
                                 </div>
-                                <button className='cell small-3 button home-page__button-search'>
+                                <button className='cell small-3 button home-page__button-search' onClick={searchAccommodation}>
                                     Buscar
                                 </button>
                                 {isVisible && (
@@ -245,7 +259,25 @@ const HomePage: React.FC<HomePageProps> = () => {
                         </div>
                     </div>
                 </div>
-                <SwipeableCardsComponent cards={cards}/>
+                {isSearch ?
+                    <div className='grid-x align-center-middle home-page__spin'>
+                        <Spin size='large' />
+                    </div>
+                    :
+                    isResult ? (
+                        <>
+                            <div className='grid-container home-page__button-return'>
+                                <button onClick={() => setIsResult(false)}>
+                                    <FaArrowLeft /> Volver
+                                </button>
+                            </div>
+                            <DescriptiveCardsComponent />
+                        </>
+                    ) : (
+                        <SwipeableCardsComponent cards={cards} />
+                    )
+
+                }
             </div>
         </LayoutHomeComponent>
     );

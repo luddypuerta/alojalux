@@ -1,0 +1,63 @@
+.bookings-page {
+
+    &__title {
+        color: #3498db;
+        margin-bottom: 10px;
+    }
+
+    &__table {
+
+        & .ant-table-container {
+            .ant-table-cell {
+                border-bottom: 1px solid #E9E1E1;
+
+                &:last-child {
+                    text-align: center;
+                }
+            }
+        }
+
+        &__container-buttons {
+            justify-content: space-evenly;
+            display: flex;
+        }
+
+        &__button-actions {
+            cursor: pointer;
+            color: #3498db;
+        }
+
+        thead.ant-table-thead {
+            & .ant-table-cell {
+                color: #34495e;
+                font-weight: bold;
+            }
+        }
+
+        & .ant-table-row .ant-table-cell {
+            color: #34495e;
+        }
+    }
+
+    &__hotel-selector {
+        margin: 20px 0;
+        width: 350px;
+        height: 40px;
+
+        &.ant-select-single .ant-select-selector {
+            border: 1px solid #3498DB;
+            color: #34495E;
+        }
+
+        &__option {
+
+            &.ant-select-item-option {
+                color: #34495E;
+            }
+
+            &.ant-select-item-option-active.ant-select-item-option-selected {
+                color: #34495E;
+            }
+        }
+    }
+}

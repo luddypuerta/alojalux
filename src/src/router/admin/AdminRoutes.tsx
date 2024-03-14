@@ -1,5 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+//Components
 import LayoutAdminComponent from "../../components/layout-admin/LayoutAdminComponent";
+
+//Libraries
+import { Route, Routes } from "react-router-dom";
+
+//Pages
 import HotelsPage from "../../pages/hotels/HotelsPage";
 import BookingsPage from "../../pages/bookings/BookingsPage";
 

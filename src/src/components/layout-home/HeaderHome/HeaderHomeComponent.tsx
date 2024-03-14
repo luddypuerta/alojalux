@@ -7,27 +7,28 @@ import LoginDrawerComponent from '../../drawer/LoginDrawerComponent'
 //Libraries
 import React, { useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 //Styles
 import "./HeaderHomeComponent.scss";
 
 const HeaderHomeComponent: React.FC = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpenDrawer] = useState(false);
 
     const showDrawer = () => {
-        setOpen(true);
+        setOpenDrawer(true);
     };
 
-    const onClose = () => {
-        setOpen(false);
+    const onCloseDrawer = () => {
+        setOpenDrawer(false);
     };
   
     return (
         <header className='grid-container'>
             <div className='header-component grid-x'>
-                <div className="header-component__logo">
+                <Link to="/home" className="header-component__logo">
                     <img src={logo} alt="Logo" />
-                </div>
+                </Link>
                 <button 
                     className="header-component__login"
                     onClick={showDrawer}>
@@ -35,7 +36,7 @@ const HeaderHomeComponent: React.FC = () => {
                     <span> Iniciar sesión </span>
                 </button>
             </div>
-            <LoginDrawerComponent open={open} onClose={onClose}/>
+            <LoginDrawerComponent isVisible={open} onCloseDrawer={onCloseDrawer}/>
         </header>
     );
 };

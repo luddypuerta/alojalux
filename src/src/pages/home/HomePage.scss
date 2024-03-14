@@ -12,6 +12,7 @@
         background-size: cover;
         background-position: center;
     }
+
     &__text {
         position: absolute;
         top: 50%;
@@ -23,10 +24,12 @@
             font-weight: bold;
             font-family: 'Blue Sans';
         }
+
         h3 {
             font-family: 'Blue Sans';
         }
     }
+
     &__container-search {
         background: #FFFFFF;
         position: absolute;
@@ -40,59 +43,70 @@
         padding: 5px;
         z-index: 1;
 
-        & .ant-select-show-search{
+        & .ant-select-show-search {
             height: 51px;
             width: 98%;
+
+            & .ant-input {
+                color: #34495E;
+            }
         }
     }
+
     &__search-hotel {
         width: 100%;
 
-        & .ant-picker{
+        & .ant-picker {
             height: 50px;
             width: 98%;
+            color: #34495E;
         }
     }
+
     &__input-search {
 
-        & .ant-input{
+        & .ant-input {
             background: #FFFFFF;
             height: 50px;
             border-radius: 5px;
         }
 
-        & .ant-input-search-button{
+        & .ant-input-search-button {
             height: 50px;
         }
     }
+
     &__panel-visibility {
         background: #FFFFFF;
         height: 50px;
         border-radius: 5px;
         width: 98%;
-        overflow: hidden; 
+        overflow: hidden;
         white-space: nowrap;
-        text-overflow: ellipsis; 
+        text-overflow: ellipsis;
         text-align: left;
         padding: 10px;
         cursor: pointer;
+        color: #34495E;
 
-        &__icon-user{
+        &__icon-user {
             font-size: 21px;
             width: 25px;
         }
     }
-    &__button-search{
+
+    &__button-search.button {
         background-color: #1677FF;
         margin: 0;
-        width: 98%;
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
     }
+
     &__panel-search {
         position: relative;
     }
+
     &__selection-panel {
         position: absolute;
         z-index: 1;
@@ -104,7 +118,7 @@
         box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
         overflow: hidden;
         transition: height 0.3s ease-in-out;
-        
+
         &__container-element {
             margin-bottom: 10px;
         }
@@ -117,18 +131,23 @@
         &__number-field {
             width: 80%;
 
-            & .ant-input-number-input{
+            & .ant-input-number-input {
                 text-align: center;
+                color: #34495E;
             }
         }
+
         &__title {
             font-size: 14px;
             font-weight: bold;
+            color: #34495E;
         }
-        & .ant-select.ant-select-outlined{
+
+        & .ant-select.ant-select-outlined {
             width: 95%;
         }
-        &__button-ready{
+
+        &__button-ready {
             background-color: #1677FF;
             margin-top: 20px;
             border-radius: 5px;
@@ -136,7 +155,21 @@
             font-weight: bold;
         }
     }
-    
+
+    &__spin {
+        width: 100%;
+        height: 400px;
+    }
+
+    &__button-return {
+        margin-top: 5rem;
+
+        button {
+            color: #3498db;
+            font-weight: bold;
+        }
+    }
+
 }
 
 //Media Screen max-width -1023

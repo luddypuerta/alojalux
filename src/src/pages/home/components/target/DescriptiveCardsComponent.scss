@@ -1,0 +1,48 @@
+.card-description {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+
+    &__container {
+        margin-bottom: 1rem;
+        border: 1px solid #e6e1e1;
+        border-radius: 20px;
+    }
+
+    &__image {
+        border-radius: 20px;
+        max-height: 220px;
+        width: 35%;
+    }
+
+    &__description {
+        padding-left: 1rem;
+        width: 65%;
+        color: #34495E;
+
+        h4 {
+            font-weight: bold;
+        }
+    }
+
+    &__sections {
+        margin-bottom: 0.5rem;
+    }
+
+    &__footer {
+        margin-top: 1rem;
+        justify-content: space-between;
+
+
+        &__price {
+            font-weight: bold;
+        }
+    }
+
+    &__tags {
+
+        &__icon {
+            height: 15px;
+            width: 15px;
+        }
+    }
+}

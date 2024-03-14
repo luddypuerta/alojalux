@@ -10,6 +10,10 @@ src/
 |   |-- Home/
 |   |   |-- HomePage.tsx
 |   |   |-- HomePage.scss
+|   |   |-- components/
+|   |   |   |-- modal/
+|   |   |   |   |-- ModalComponent.scss
+|   |   |   |   |-- ModalComponent.tsx
 |   |-- Login/
 |   |   |-- LoginPage.tsx
 |   |   |-- LoginPage.scss

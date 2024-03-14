@@ -4,12 +4,15 @@ import { Drawer, Form, Input, Button } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { useNavigate } from "react-router-dom";
 
+//Styles
+import './LoginDrawerComponent.scss'
+
 interface LoginDrawerComponentProps {
-  open: boolean;
-  onClose: () => void;
+  isVisible: boolean;
+  onCloseDrawer: () => void;
 }
 
-const LoginDrawerComponent: React.FC<LoginDrawerComponentProps> = ({ open, onClose }) => {
+const LoginDrawerComponent: React.FC<LoginDrawerComponentProps> = ({ isVisible, onCloseDrawer }) => {
   const [form] = Form.useForm<FormInstance>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,8 +30,13 @@ const LoginDrawerComponent: React.FC<LoginDrawerComponentProps> = ({ open, onClo
   };
 
   return (
-    <Drawer title="Iniciar Sesión" onClose={onClose} open={open}>
-      <Form form={form} onFinish={authLogin}>
+    <Drawer 
+      className='login-drawer'
+      title="Iniciar Sesión" onClose={onCloseDrawer} open={isVisible}>
+      <Form 
+        className='grid-x login-drawer__form'
+        form={form} onFinish={authLogin}
+        >
         <Form.Item
           label="Usuario"
           name="username"

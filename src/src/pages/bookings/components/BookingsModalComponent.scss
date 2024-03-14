@@ -1,0 +1,51 @@
+.booking-modal {
+
+    & .ant-modal-header {
+        text-align: center;
+
+        & .ant-modal-title {
+            font-size: 22px;
+            color: #3498db;
+        }
+    }
+
+    span {
+        color: #34495e;
+    }
+
+    &__content {
+        margin-bottom: 20px;
+    }
+
+    &__title {
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #34495e;
+    }
+
+    &__label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #34495e;
+    }
+
+    &__table {
+        & .ant-table-content {
+            width: 100%;
+            max-height: 400px;
+            overflow: scroll;
+            border: 1px solid #d7d2d2;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+            .ant-table-thead>tr th {
+                border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .ant-table-cell {
+                color: #34495e;
+            }
+        }
+    }
+
+}

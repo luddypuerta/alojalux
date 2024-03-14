@@ -1,3 +1,4 @@
+//Interfaces
 export interface CardData {
     site: string;
     country: string;

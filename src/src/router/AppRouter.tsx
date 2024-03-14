@@ -1,4 +1,7 @@
+//Libraries
 import { Route, Routes } from "react-router-dom"
+
+//Routes
 import { PrivateRoute, PublicRoute } from "."
 import AdminRoutes from "./admin/AdminRoutes"
 import MainRoutes from "./main/MainRoutes"

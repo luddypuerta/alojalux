@@ -1,73 +1,93 @@
 //Components
-import HotelModalComponent from './components/HotelModalComponent';
+import HotelModalComponent from './components/modal/HotelsModalComponent';
 
 //Interfaces
-import { Hotel, Column, hotelColumns, hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
+import { HotelInterface, ColumnInterface, hotelColumns, hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
 
 //Libraries
 import React, { useState } from 'react';
-import { Table } from 'antd';
-import { EditOutlined, EyeOutlined, StopOutlined } from '@ant-design/icons';
-
+import { Table, Button, Select } from 'antd';
+import { EditOutlined, StopOutlined } from '@ant-design/icons';
 
 //Styles
 import './HotelsPage.scss'
 
+const { Option } = Select;
 const HotelsPage: React.FC = () => {
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalHotelVisible, setModalHotelVisible] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<string>('');
 
   const openModalHotel = () => {
-    setModalVisible(true);
+    setModalHotelVisible(true);
     setIsAdding(true);
   };
 
   const editHotel = () => {
-    setModalVisible(true);
+    setModalHotelVisible(true);
     setIsAdding(false);
   };
 
   const closeModalHotel = () => {
-    setModalVisible(false);
+    setModalHotelVisible(false);
   };
 
-  const detailsHotel = (record: Hotel) => {
+  const disableHotel = (record: HotelInterface) => {
     console.log(record)
   };
 
-  const disableHotel = (record: Hotel) => {
-    console.log(record)
+  const handleHotelChange = (value: string) => {
+    setSelectedHotel(value);
   };
+
+  const filteredBookings = selectedHotel ? hotelData.filter(data => data.key === selectedHotel) : hotelData;
 
   const actionColumn = {
     title: 'Acciones',
     key: 'actions',
-    dataIndex: 'actions',
-    render: (record: Hotel) => (
+    render: (record: HotelInterface) => (
       <div className='hotels-page__table__container-buttons'>
-        <button className='hotels-page__table__button-actions' onClick={editHotel}> <EditOutlined /></button>
-        <button className='hotels-page__table__button-actions' onClick={() => detailsHotel(record)}><EyeOutlined /></button>
-        <button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)}><StopOutlined /></button>
+        <Button className='hotels-page__table__button-actions' onClick={editHotel} icon={<EditOutlined />}></Button>
+        <Button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)} icon={<StopOutlined />}></Button>
       </div>
     ),
   };
 
-  const columnsWithActions: Column[] = [...hotelColumns, actionColumn];
-
+  const columnsWithActions: ColumnInterface[] = [...hotelColumns, actionColumn];
 
   return (
     <div className='hotels-page'>
       <div className='grid-x align-center'>
-        <button 
-            className='hotels-page__button-add button'
-            onClick={openModalHotel}>
-            Agregar Hotel
+        <button
+          className='hotels-page__button-add button'
+          onClick={openModalHotel}>
+          Agregar Hotel
         </button>
       </div>
-      <h4>Lista de Hoteles</h4>
-      <Table className='hotels-page__table' columns={columnsWithActions} dataSource={hotelData} />
-      <HotelModalComponent open={modalVisible} onCancel={closeModalHotel} isAdding={isAdding} />
+      <h4 className='hotels-page__title'>Lista de Hoteles</h4>
+      <Select
+        className='hotels-page__hotel-selector'
+        placeholder='Seleccionar hotel'
+        onChange={handleHotelChange}
+        value={selectedHotel}
+      >
+        <Option
+          className='hotels-page__hotel-selector__option'
+          value=''>
+          Todos los hoteles
+        </Option>
+        {hotelData.map(hotel => (
+          <Option
+            key={hotel.key}
+            className='hotels-page__hotel-selector__option'
+            value={hotel.key}>
+            {hotel.name}
+          </Option>
+        ))}
+      </Select>
+      <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredBookings} />
+      <HotelModalComponent open={modalHotelVisible} onCancel={closeModalHotel} isAdding={isAdding} />
     </div>
   );
 };
