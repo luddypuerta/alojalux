@@ -2,15 +2,21 @@
 import HotelModalComponent from './components/modal/HotelsModalComponent';
 
 //Interfaces
-import { HotelInterface, ColumnInterface, hotelColumns, hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
+import { HotelInterface, ColumnInterface, hotelColumns } from '../../utils/interfaces/hotels/HotelDataInterface'
 
 //Libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
 
+//Services
+import { getAllHotelsService } from '../../services/hotels/hotelsService';
+
 //Styles
 import './HotelsPage.scss'
+
+//Utils
+import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 
 const { Option } = Select;
 const HotelsPage: React.FC = () => {
@@ -18,6 +24,20 @@ const HotelsPage: React.FC = () => {
   const [modalHotelVisible, setModalHotelVisible] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<string>('');
+  const [hotelsList, setHotels] = useState<HotelInterface[]>([]);
+
+  useEffect(() => {
+    getHotels();
+  }, []);
+
+  const getHotels = async () => {
+    try {
+      const responseAllHotels = await getAllHotelsService()
+      setHotels(responseAllHotels ? responseAllHotels : []);
+    } catch (error) {
+      ErrorAlertComponent()
+    }
+  };
 
   const openModalHotel = () => {
     setModalHotelVisible(true);
@@ -41,7 +61,7 @@ const HotelsPage: React.FC = () => {
     setSelectedHotel(value);
   };
 
-  const filteredBookings = selectedHotel ? hotelData.filter(data => data.key === selectedHotel) : hotelData;
+  const filteredBookings = selectedHotel ? hotelsList.filter(data => data.key === selectedHotel) : hotelsList;
 
   const actionColumn = {
     title: 'Acciones',
@@ -77,7 +97,7 @@ const HotelsPage: React.FC = () => {
           value=''>
           Todos los hoteles
         </Option>
-        {hotelData.map(hotel => (
+        {hotelsList.map(hotel => (
           <Option
             key={hotel.key}
             className='hotels-page__hotel-selector__option'

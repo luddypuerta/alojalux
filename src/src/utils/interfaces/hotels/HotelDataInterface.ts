@@ -123,11 +123,11 @@ export const hotelData: HotelInterface[] = [
         image: "/cartagena-colonial-hotel.jpg",
         packagesIncluded: [
             {
-                id: '7',
+                id: '9',
                 name: "Recorrido gratuito por la ciudad",
             },
             {
-                id: '8',
+                id: '10',
                 name: "Experiencia colonial única",
             }
         ],
@@ -145,11 +145,11 @@ export const hotelData: HotelInterface[] = [
         image: "/cucuta-plaza-hotel.jpg",
         packagesIncluded: [
             {
-                id: '9',
+                id: '11',
                 name: "Descuento del 10% en comidas",
             },
             {
-                id: '10',
+                id: '12',
                 name: "Ubicación céntrica",
             } 
         ],
@@ -167,11 +167,11 @@ export const hotelData: HotelInterface[] = [
         image: "/bucaramanga-mountain-retreat.jpg",
         packagesIncluded: [
             {
-                id: '11',
+                id: '13',
                 name: "Vistas panorámicas a las montañas",
             },
             {
-                id: '12',
+                id: '14',
                 name: "Noche adicional gratis",
             } 
         ],
@@ -189,11 +189,11 @@ export const hotelData: HotelInterface[] = [
         image: "/pereira-valley-resort.jpg",
         packagesIncluded: [
             {
-                id: '13',
+                id: '15',
                 name: "Entorno natural tranquilo",
             },
             {
-                id: '14',
+                id: '16',
                 name: "Masaje de bienvenida gratuito",
             } 
         ],
@@ -211,11 +211,11 @@ export const hotelData: HotelInterface[] = [
         image: "/santa-marta-beachfront-hotel.jpg",
         packagesIncluded: [
             {
-                id: '15',
+                id: '17',
                 name:  "Acceso directo a la playa",
             },
             {
-                id: '16',
+                id: '18',
                 name: "Cocktail de bienvenida gratis"
             } 
         ],
@@ -233,11 +233,11 @@ export const hotelData: HotelInterface[] = [
         image: "/ibague-green-valley-resort.jpg",
         packagesIncluded: [
             {
-                id: '17',
+                id: '19',
                 name: "Paseo en bicicleta por el valle",
             },
             {
-                id: '18',
+                id: '20',
                 name: "Ambiente tranquilo y relajado",
             } 
         ],

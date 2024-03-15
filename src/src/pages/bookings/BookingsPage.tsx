@@ -1,17 +1,23 @@
 //Components
 import BookingsModalComponent from './components/BookingsModalComponent';
 
+//Interfaces
+import { BookingInterface, ColumnInterface, bookingColumns } from '../../utils/interfaces/bookings/BookingDataInterface';
+import { hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
+
 //Libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
+
+//Services
+import { getAllBookingsService } from '../../services/bookings/bookingsService';
 
 //Styles
 import './BookingsPage.scss';
 
 //Utils
-import { BookingInterface, ColumnInterface, bookingData, bookingColumns } from '../../utils/interfaces/bookings/BookingDataInterface';
-import { hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
+import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 
 const { Option } = Select;
 
@@ -19,22 +25,36 @@ const BookingsPage: React.FC = () => {
   const [selectedHotel, setSelectedHotel] = useState<string>('');
   const [modalBookingVisible, setModalBookingVisible] = useState(false);
   const [bookingDetails, setBookingDetails] = useState<BookingInterface | null>(null);
+  const [bookingList, setBookings] = useState<BookingInterface[]>([]);
+
+
+  useEffect(() => {
+    getBookings();
+  }, []);
+
+  const getBookings = async () => {
+    try {
+      const responseAllBookings = await getAllBookingsService()
+      setBookings(responseAllBookings ? responseAllBookings : []);
+    } catch (error) {
+      ErrorAlertComponent()
+    }
+  };
 
   const hotelChange = (value: string) => {
     setSelectedHotel(value);
   };
 
-  const viewBookingDetails = (record: BookingInterface) => {
-    setBookingDetails(record);
+  const viewBookingDetails = (element: BookingInterface) => {
+    setBookingDetails(element);
     setModalBookingVisible(true);
   };
-
 
   const closeModalBooking = () => {
     setModalBookingVisible(false);
   };
 
-  const filteredBookings = selectedHotel ? bookingData.filter(data => data.idHotel === selectedHotel) : bookingData;
+  const filteredBookings = selectedHotel ? bookingList.filter(data => data.idHotel === selectedHotel) : bookingList;
 
   const actionColumn = {
     title: 'Acciones',
