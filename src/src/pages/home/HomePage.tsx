@@ -15,13 +15,13 @@ import { BankOutlined, UserOutlined } from '@ant-design/icons';
 import { FaArrowLeft } from 'react-icons/fa';
 
 //Services
-import { getAllSites, getDataSites } from '../../services/home/homeServices';
+import { getAllSitesService, getDataSitesService } from '../../services/home/homeServices';
 
 //Styles
 import "./HomePage.scss";
 
 //Utils
-import ErrorAlertComponent from '../../utils/error-alert/error-alert.component';
+import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 import { CardSiteInterface } from '../../utils/interfaces/home/CardDataInterface';
 
 const { RangePicker } = DatePicker;
@@ -106,18 +106,6 @@ const HomePage: React.FC = () => {
         setIsVisible(prev => !prev);
     };
 
-    const searchCity = async(value: string = "") => {
-        try {
-            setSearchText(value)
-            if (value === "" || value.length > 2) {
-                const responseFilteredCities = await getDataSites(value)
-                setCities(responseFilteredCities)
-            }
-        } catch (error) {
-            ErrorAlertComponent()
-        }
-    };
-
     const selectCity = (value: string) => {
         setSearchText(value);
     };
@@ -130,15 +118,6 @@ const HomePage: React.FC = () => {
         searchCity()
         getSites()
     }, [])
-    
-    const getSites = async () => {
-        try {
-            const responseAllSites = await getAllSites()
-            setCards(responseAllSites)
-        } catch (error) {
-            ErrorAlertComponent()
-        }
-    }
 
     useEffect(() => {
         if (isSearch) {
@@ -149,6 +128,27 @@ const HomePage: React.FC = () => {
         }
 
     }, [isSearch])
+    
+    //Services
+    const searchCity = async(value: string = "") => {
+        try {
+            setSearchText(value)
+            if (value === "" || value.length > 2) {
+                const responseFilteredCities = await getDataSitesService(value)
+                setCities(responseFilteredCities)
+            }
+        } catch (error) {
+            ErrorAlertComponent()
+        }
+    };
+    const getSites = async () => {
+        try {
+            const responseAllSites = await getAllSitesService()
+            setCards(responseAllSites)
+        } catch (error) {
+            ErrorAlertComponent()
+        }
+    }
 
     return (
         <LayoutHomeComponent>

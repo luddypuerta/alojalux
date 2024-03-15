@@ -4,8 +4,15 @@ import { Drawer, Form, Input, Button } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { useNavigate } from "react-router-dom";
 
+//Services
+import { authService } from '../../services/login/loginServices';
+
 //Styles
 import './LoginDrawerComponent.scss'
+
+//Utils
+import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
+import SuccessAlertComponent from '../../utils/alerts/success-alert.component';
 
 interface LoginDrawerComponentProps {
   isVisible: boolean;
@@ -18,16 +25,27 @@ const LoginDrawerComponent: React.FC<LoginDrawerComponentProps> = ({ isVisible, 
   const navigate = useNavigate();
 
   const authLogin = async (values: any) => {
-    setLoading(true);
-    const { password, username } = values
 
-    if (password === '123456' && username === 'admin') {
-      const token = '123452134234234'
-      localStorage.setItem("token", token);
+    try {
+      const { password, username } = values
+      setLoading(true);
+  
+      const responseLogin = await authService(username, password)
+      if (responseLogin) {
+        localStorage.setItem("token", responseLogin?.token);
+        setLoading(false);
+        navigate('/admin/hotels');
+        SuccessAlertComponent("¡Bienvenido a la administración!", "Has iniciado sesión exitosamente.");
+      }
+    } catch (error: any) {
       setLoading(false);
-      navigate('/admin/hotels');
+      if (error && error.code === 'US-0001') {
+        ErrorAlertComponent("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
+      } else {
+        ErrorAlertComponent("Ocurrió un error en el servidor. Por favor, inténtalo de nuevo más tarde.");
+      }
     }
-  };
+};
 
   return (
     <Drawer 

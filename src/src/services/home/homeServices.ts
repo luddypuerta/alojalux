@@ -6,7 +6,7 @@ import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInter
 import { CardSiteInterface } from '../../utils/interfaces/home/CardDataInterface';
 import { SiteListInterface } from '../../utils/interfaces/home/SiteListDataInterface';
 
-export const getDataSites = async (filter:string) => {
+export const getDataSitesService = async (filter:string) => {
     const response = await ApiService.apiFetch(`site/filter?siteName=${filter}`, null, 'GET')
     const {data: responseGetSites, errors, status }: ApiResponse = await response.json()
     if (responseGetSites && status) {
@@ -22,7 +22,7 @@ export const getDataSites = async (filter:string) => {
     }
 };
 
-export const getAllSites = async () => {
+export const getAllSitesService = async () => {
     const response = await ApiService.apiFetch(`site`, null, 'GET')
     const {data: responseGetSites, errors, status }: ApiResponse = await response.json()
     if (responseGetSites && status) {
