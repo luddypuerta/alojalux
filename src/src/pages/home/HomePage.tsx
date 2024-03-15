@@ -1,13 +1,5 @@
 //Assets
 import imageBackground from '@assets/images/hotels/hotel-alojalux.jpeg';
-import imageBarcelona from '@assets/images/tourism/tourism-barcelona.jpeg';
-import imageCartagena from '@assets/images/tourism/tourism-cartagena.webp';
-import imageMadrid from '@assets/images/tourism/tourism-madrid.webp';
-import imageMedellin from '@assets/images/tourism/tourism-medellin.jpeg';
-import imageNewyork from '@assets/images/tourism/tourism-newyork.webp';
-import imageSanandres from '@assets/images/tourism/tourism-sanandres.jpeg';
-import imageSantamarta from '@assets/images/tourism/tourism-santamarta.jpeg';
-import imageValledupar from '@assets/images/tourism/tourism-valledupar.jpeg';
 
 //Components
 import LayoutHomeComponent from '../../components/layout-home/LayoutHomeComponent';
@@ -22,8 +14,15 @@ import esES from 'antd/lib/locale/es_ES';
 import { BankOutlined, UserOutlined } from '@ant-design/icons';
 import { FaArrowLeft } from 'react-icons/fa';
 
+//Services
+import { getAllSites, getDataSites } from '../../services/home/homeServices';
+
 //Styles
 import "./HomePage.scss";
+
+//Utils
+import ErrorAlertComponent from '../../utils/error-alert/error-alert.component';
+import { CardSiteInterface } from '../../utils/interfaces/home/CardDataInterface';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -36,25 +35,12 @@ const HomePage: React.FC = () => {
     const [numRooms, setNumRooms] = useState<number>(1);
     const [numChildren, setNumChildren] = useState<number>(0);
     const [childAges, setChildAges] = useState<number[]>([]);
-    const [cities, setCities] = useState<string[]>([
-        'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena',
-        'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué',
-    ]);
-    const [originalCities] = useState<string[]>(cities);
+    const [cities, setCities] = useState<object[]>([]);
     const [isSearch, setIsSearch] = useState<boolean>(false);
     const [isResult, setIsResult] = useState<boolean>(false);
     const MAX_CHILD_AGE = 17;
     const childAgeOptions = Array.from({ length: MAX_CHILD_AGE + 1 }, (_, i) => i);
-    const cards = [
-        { site: 'Barcelona', country: 'España', image: imageBarcelona },
-        { site: 'Cartagena', country: 'Colombia', image: imageCartagena },
-        { site: 'Madrid', country: 'España', image: imageMadrid },
-        { site: 'Medellin', country: 'Colombia', image: imageMedellin },
-        { site: 'Nueva York', country: 'Estados Unidos', image: imageNewyork },
-        { site: 'San Andrés', country: 'Colombia', image: imageSanandres },
-        { site: 'Santa Marta', country: 'Colombia', image: imageSantamarta },
-        { site: 'Valledupar', country: 'Colombia', image: imageValledupar },
-    ];
+    const [ cards, setCards ] = useState<CardSiteInterface[]>([]);
 
     const addAdult = () => {
         setNumAdults(prevNumAdults => prevNumAdults + 1);
@@ -120,13 +106,16 @@ const HomePage: React.FC = () => {
         setIsVisible(prev => !prev);
     };
 
-    const searchCity = (value: string) => {
-
-        setSearchText(value);
-        const filteredCities = originalCities.filter(city =>
-            city.toLowerCase().includes(value.toLowerCase())
-        );
-        setCities(filteredCities);
+    const searchCity = async(value: string = "") => {
+        try {
+            setSearchText(value)
+            if (value === "" || value.length > 2) {
+                const responseFilteredCities = await getDataSites(value)
+                setCities(responseFilteredCities)
+            }
+        } catch (error) {
+            ErrorAlertComponent()
+        }
     };
 
     const selectCity = (value: string) => {
@@ -136,6 +125,20 @@ const HomePage: React.FC = () => {
     const searchAccommodation = () => {
         setIsSearch(prev => !prev);
     };
+
+    useEffect(() => {
+        searchCity()
+        getSites()
+    }, [])
+    
+    const getSites = async () => {
+        try {
+            const responseAllSites = await getAllSites()
+            setCards(responseAllSites)
+        } catch (error) {
+            ErrorAlertComponent()
+        }
+    }
 
     useEffect(() => {
         if (isSearch) {
@@ -162,7 +165,7 @@ const HomePage: React.FC = () => {
                             <div className='cell small-12 large-4'>
                                 <AutoComplete
                                     value={searchText}
-                                    options={cities.map(city => ({ value: city }))}
+                                    options={cities}
                                     onSelect={selectCity}
                                     onSearch={searchCity}
                                     className='home-page__autocomplete'

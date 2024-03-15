@@ -1,5 +1,5 @@
 //Interfaces
-import { CardData } from '../../../utils/interfaces/home/CardDataInterface';
+import { CardSiteInterface } from '../../../utils/interfaces/home/CardDataInterface';
 
 //Libraries
 import React from 'react';
@@ -9,7 +9,7 @@ import { Carousel, Card } from 'antd';
 import './SwipeableCardsComponent.scss';
 
 interface SwipeableCardsProps {
-  cards: CardData[];
+  cards: CardSiteInterface[];
 }
 
 const SwipeableCardsComponent: React.FC<SwipeableCardsProps> = ({ cards }) => {
@@ -34,7 +34,7 @@ const SwipeableCardsComponent: React.FC<SwipeableCardsProps> = ({ cards }) => {
             <div key={index} className={`small-12 medium-${12 / getSlidesToShow()} cards-container__card`}>
               <Card
                 className='cards-container__card__image'
-                style={{ backgroundImage: `url(${card.image})` }}
+                style={{ backgroundImage: `url(/assets/images/${card.image})` }}
               >
               </Card>
               <div className="cards-container__card__content">

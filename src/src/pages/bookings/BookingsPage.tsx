@@ -4,7 +4,7 @@ import BookingsModalComponent from './components/BookingsModalComponent';
 //Libraries
 import React, { useState } from 'react';
 import { Table, Button, Select } from 'antd';
-import { EyeOutlined, StopOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 //Styles
 import './BookingsPage.scss';
@@ -29,9 +29,6 @@ const BookingsPage: React.FC = () => {
     setModalBookingVisible(true);
   };
 
-  const disableBooking = (record: BookingInterface) => {
-    console.log(record);
-  };
 
   const closeModalBooking = () => {
     setModalBookingVisible(false);
@@ -45,7 +42,6 @@ const BookingsPage: React.FC = () => {
     render: (record: BookingInterface) => (
       <div className='bookings-page__table__container-buttons'>
         <Button className='bookings-page__table__button-actions' onClick={() => viewBookingDetails(record)} icon={<EyeOutlined />}></Button>
-        <Button className='bookings-page__table__button-actions' onClick={() => disableBooking(record)} icon={<StopOutlined />}></Button>
       </div>
     ),
   };

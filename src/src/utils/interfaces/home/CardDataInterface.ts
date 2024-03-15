@@ -1,5 +1,5 @@
 //Interfaces
-export interface CardData {
+export interface CardSiteInterface {
     site: string;
     country: string;
     image: string;
