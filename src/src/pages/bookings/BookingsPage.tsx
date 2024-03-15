@@ -3,12 +3,13 @@ import BookingsModalComponent from './components/BookingsModalComponent';
 
 //Interfaces
 import { BookingInterface, ColumnInterface, bookingColumns } from '../../utils/interfaces/bookings/BookingDataInterface';
-import { hotelData } from '../../utils/interfaces/hotels/HotelDataInterface'
+import { HotelInterface } from '../../utils/interfaces/hotels/HotelDataInterface'
 
 //Libraries
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 //Services
 import { getAllBookingsService } from '../../services/bookings/bookingsService';
@@ -27,6 +28,7 @@ const BookingsPage: React.FC = () => {
   const [bookingDetails, setBookingDetails] = useState<BookingInterface | null>(null);
   const [bookingList, setBookings] = useState<BookingInterface[]>([]);
 
+  const hotelsList = useSelector((state: any) => state.hotels.hotels);
 
   useEffect(() => {
     getBookings();
@@ -82,7 +84,7 @@ const BookingsPage: React.FC = () => {
           value=''>
           Todos los hoteles
         </Option>
-        {hotelData.map(hotel => (
+        {hotelsList.map((hotel: HotelInterface) => (
           <Option
             key={hotel.key}
             className='bookings-page__hotel-selector__option'

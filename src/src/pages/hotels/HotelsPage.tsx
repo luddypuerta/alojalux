@@ -2,42 +2,33 @@
 import HotelModalComponent from './components/modal/HotelsModalComponent';
 
 //Interfaces
-import { HotelInterface, ColumnInterface, hotelColumns } from '../../utils/interfaces/hotels/HotelDataInterface'
+import { ColumnInterface, HotelInterface, hotelColumns } from '../../utils/interfaces/hotels/HotelDataInterface';
 
 //Libraries
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
 
-//Services
-import { getAllHotelsService } from '../../services/hotels/hotelsService';
+//Redux
+import { getHotels } from '../../redux/operations/hotelOperations';
 
 //Styles
 import './HotelsPage.scss'
 
-//Utils
-import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
-
 const { Option } = Select;
-const HotelsPage: React.FC = () => {
 
+const HotelsPage: React.FC = () => {
   const [modalHotelVisible, setModalHotelVisible] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<string>('');
-  const [hotelsList, setHotels] = useState<HotelInterface[]>([]);
+
+  const hotelsList = useSelector((state: any) => state.hotels.hotels);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getHotels();
-  }, []);
-
-  const getHotels = async () => {
-    try {
-      const responseAllHotels = await getAllHotelsService()
-      setHotels(responseAllHotels ? responseAllHotels : []);
-    } catch (error) {
-      ErrorAlertComponent()
-    }
-  };
+    dispatch<any>(getHotels()); 
+  }, [dispatch]);
 
   const openModalHotel = () => {
     setModalHotelVisible(true);
@@ -61,12 +52,12 @@ const HotelsPage: React.FC = () => {
     setSelectedHotel(value);
   };
 
-  const filteredBookings = selectedHotel ? hotelsList.filter(data => data.key === selectedHotel) : hotelsList;
+  const filteredHotels = selectedHotel ? hotelsList.filter((hotel: any) => hotel.key === selectedHotel) : hotelsList;
 
   const actionColumn = {
     title: 'Acciones',
     key: 'actions',
-    render: (record: HotelInterface) => (
+    render: (record: ColumnInterface) => (
       <div className='hotels-page__table__container-buttons'>
         <Button className='hotels-page__table__button-actions' onClick={editHotel} icon={<EditOutlined />}></Button>
         <Button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)} icon={<StopOutlined />}></Button>
@@ -74,7 +65,10 @@ const HotelsPage: React.FC = () => {
     ),
   };
 
-  const columnsWithActions: ColumnInterface[] = [...hotelColumns, actionColumn];
+  const columnsWithActions: ColumnInterface[] = [
+    ...hotelColumns,
+    actionColumn
+  ];
 
   return (
     <div className='hotels-page'>
@@ -97,7 +91,7 @@ const HotelsPage: React.FC = () => {
           value=''>
           Todos los hoteles
         </Option>
-        {hotelsList.map(hotel => (
+        {hotelsList.map((hotel: HotelInterface) => (
           <Option
             key={hotel.key}
             className='hotels-page__hotel-selector__option'
@@ -106,7 +100,7 @@ const HotelsPage: React.FC = () => {
           </Option>
         ))}
       </Select>
-      <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredBookings} />
+      <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredHotels} />
       <HotelModalComponent open={modalHotelVisible} onCancel={closeModalHotel} isAdding={isAdding} />
     </div>
   );
