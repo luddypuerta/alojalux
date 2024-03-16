@@ -5,6 +5,8 @@ import { UploadOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 
 //Interfaces
 import { typeRoomData, RoomData, roomInitialValues } from '../../../../utils/interfaces/rooms/RoomDataInterface'
+import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
+import { HotelInterface } from '../../../../utils/interfaces/hotels/HotelDataInterface';
 
 //Styles
 import './RoomsComponent.scss'
@@ -14,11 +16,12 @@ const { Item } = Form;
 
 
 interface RoomsComponentProps {
-    hotelData: any;
+    hotelData: HotelInterface;
     setHotelData: (data: any) => void;
+    roomList: RoomInterface[]
 }
 
-const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData }) => {
+const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData, roomList}) => {
     const [rooms, setRooms] = useState<RoomData[]>([]);
 
     useEffect(() => {

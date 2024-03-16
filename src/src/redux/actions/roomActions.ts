@@ -1,5 +1,5 @@
 import { SET_ROOM } from "../actionTypes/roomActionTypes";
-import { RoomInterface } from "../../utils/interfaces/room/RoomInterface";
+import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
 
 interface SetRoomAction {
   type: typeof SET_ROOM;

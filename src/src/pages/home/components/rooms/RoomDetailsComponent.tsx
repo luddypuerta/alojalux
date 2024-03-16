@@ -12,9 +12,11 @@ import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaBed, FaCar, FaUsers, FaUtensils, FaWifi } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
+//Redux
+import { getRoomById } from '../../../../redux/operations/roomOperations';
+
 //Styles
 import './RoomDetailsComponent.scss';
-import { getRoomById } from '../../../../redux/operations/roomOperations';
 
 const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -34,11 +36,13 @@ const getIconComponent = (iconName: string) => {
 };
 
 const RoomDetailsComponent: React.FC = () => {
-    const roomSelect: RoomInterface[] = useSelector((state: any) => state?.room?.room); // Definimos el tipo de roomSelect como RoomInterface[]
-    const dispatch = useDispatch();
+    const roomList: RoomInterface[] = useSelector((state: any) => state?.room?.room);
     const [useRoomSelected, setUseRoomSelected] = useState({name:'',idHotel:'',roomType: { id: '', name: '' }}); 
+    
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch<any>(getRoomById()); 
+        dispatch<any>(getRoomById(6)); 
       }, [dispatch]);
 
     const [modalCardVisible, setModalCardVisible] = useState<boolean>(false);
@@ -62,7 +66,7 @@ const RoomDetailsComponent: React.FC = () => {
                     <h4 className='room-details__title-room'>Elige tu habitación de Preferencia</h4>
                 </div>
                 <div className='grid-x'>
-                    {roomSelect.map(room => (
+                    {roomList.map(room => (
                         <div key={room.id} className="small-12 medium-6 large-4 room-details__card">
                             <Card className="room-details__content">
                                 <div className="room-details__image">

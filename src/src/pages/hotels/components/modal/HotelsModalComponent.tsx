@@ -3,6 +3,7 @@ import RoomsComponent from '../rooms/RoomsComponent';
 
 //Interfaces
 import { HotelInterface, PackageInterface, hotelInitialValues } from '../../../../utils/interfaces/hotels/HotelDataInterface';
+import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
 
 //Libraries
 import React, { useEffect, useState } from 'react';
@@ -22,13 +23,15 @@ interface HotelModalComponentProps {
     onCancel: () => void;
     isAdding: boolean;
     hotelDetails?: HotelInterface;
+    roomList: RoomInterface[];
 }
 
 const HotelModalComponent: React.FC<HotelModalComponentProps> = (
     {   open, 
         onCancel, 
         isAdding,
-        hotelDetails
+        hotelDetails,
+        roomList
     }) => {
         
     const [currentStep, setCurrentStep] = useState(0);
@@ -253,6 +256,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                     <div>
                         <RoomsComponent
                             hotelData={hotelData}
+                            roomList={roomList}
                             setHotelData={setHotelData}
                         />
                         <div className='grid-x align-justify'>

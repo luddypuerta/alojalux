@@ -1,4 +1,4 @@
-import { RoomInterface } from "../../utils/interfaces/room/RoomInterface";
+import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
 import { SET_ROOM } from "../actionTypes/roomActionTypes";
 
 interface RoomState {

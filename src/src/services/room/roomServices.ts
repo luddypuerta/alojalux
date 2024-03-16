@@ -5,8 +5,8 @@ import { ApiService } from "../ApiService";
 import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInterface";
 import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
 
-export const getRoomByIdService = async () => {
-    const response = await ApiService.apiFetch(`room/hotel/6`, null, 'GET')
+export const getRoomByIdService = async (id: number) => {
+    const response = await ApiService.apiFetch(`room/hotel/${id}`, null, 'GET')
     const {data: responseGetRoomById, errors, status }: ApiResponse = await response.json()
 
     if (responseGetRoomById && status) {

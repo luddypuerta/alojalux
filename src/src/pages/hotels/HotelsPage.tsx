@@ -3,15 +3,17 @@ import HotelModalComponent from './components/modal/HotelsModalComponent';
 
 //Interfaces
 import { ColumnInterface, HotelInterface, hotelColumns } from '../../utils/interfaces/hotels/HotelDataInterface';
+import { RoomInterface } from '../../utils/interfaces/rooms/RoomInterface';
 
 //Libraries
 import { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
-import { EditOutlined, StopOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 //Redux
 import { getHotels } from '../../redux/operations/hotelOperations';
+import { getRoomById } from '../../redux/operations/roomOperations';
 
 //Styles
 import './HotelsPage.scss'
@@ -26,6 +28,7 @@ const HotelsPage: React.FC = () => {
 
   //Data Redux
   const hotelsList = useSelector((state: any) => state.hotels.hotels);
+  const roomList: RoomInterface[] = useSelector((state: any) => state?.room?.room);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,16 +42,18 @@ const HotelsPage: React.FC = () => {
 
   const editHotel = (element: HotelInterface) => {
     setHotelDetails(element);
+    setRoomDetails(element.key);
     setModalHotelVisible(true);
     setIsAdding(false);
   };
 
+  const setRoomDetails = (key: string) => {
+    const idHotel = parseInt(key, 10);
+    dispatch<any>(getRoomById(idHotel));
+  }
+
   const closeModalHotel = () => {
     setModalHotelVisible(false);
-  };
-
-  const disableHotel = (record: HotelInterface) => {
-    // console.log(record)
   };
 
   const handleHotelChange = (value: string) => {
@@ -62,8 +67,7 @@ const HotelsPage: React.FC = () => {
     key: 'actions',
     render: (record: HotelInterface) => (
       <div className='hotels-page__table__container-buttons'>
-        <Button className='hotels-page__table__button-actions' onClick={() => editHotel(record)} icon={<EditOutlined />}></Button>
-        <Button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)} icon={<StopOutlined />}></Button>
+        <Button className='hotels-page__table__button-actions' onClick={() => editHotel(record)} icon={<EditOutlined />}>Editar</Button>
       </div>
     ),
   };
@@ -104,11 +108,12 @@ const HotelsPage: React.FC = () => {
         ))}
       </Select>
       <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredHotels} />
-      <HotelModalComponent 
-        open={modalHotelVisible} 
-        onCancel={closeModalHotel} 
-        isAdding={isAdding}
-        hotelDetails={hotelDetails} 
+      <HotelModalComponent
+          open={modalHotelVisible}
+          onCancel={closeModalHotel}
+          isAdding={isAdding}
+          hotelDetails={hotelDetails}
+          roomList={roomList}
         />
     </div>
   );
