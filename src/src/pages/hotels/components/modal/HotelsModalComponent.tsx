@@ -2,7 +2,7 @@
 import RoomsComponent from '../rooms/RoomsComponent';
 
 //Interfaces
-import { HotelInterface, PackageInterface } from '../../../../utils/interfaces/hotels/HotelDataInterface';
+import { HotelInterface, PackageInterface, hotelInitialValues } from '../../../../utils/interfaces/hotels/HotelDataInterface';
 
 //Libraries
 import React, { useEffect, useState } from 'react';
@@ -31,29 +31,22 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
         hotelDetails
     }) => {
         
-    const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [newPackage, setNewPackage] = useState('');
-    const [hotelData, setHotelData] = useState<HotelInterface>({
-        key: '',
-        name: '',
-        location: '',
-        stars: 0,
-        title: '',
-        description: '',
-        textOffer: '',
-        price: '',
-        image: '',
-        packagesIncluded: [],
-        status: true,
-    });
+    const [hotelData, setHotelData] = useState<HotelInterface>(hotelInitialValues);
 
     useEffect(() => {
-        if (hotelDetails) {
+        if (isAdding) {
+            clearForm();
+        } else if (hotelDetails) {
             setHotelData(hotelDetails);
-            console.log('hotelData actualizado:', hotelDetails);
         }
-    }, [hotelDetails]);
+    }, [isAdding, hotelDetails]);
+    
+
+    const clearForm = () => {
+        setHotelData(hotelInitialValues);
+    };
     const handleNext = () => {
         setCurrentStep(currentStep + 1);
     };

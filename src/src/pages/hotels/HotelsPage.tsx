@@ -38,9 +38,9 @@ const HotelsPage: React.FC = () => {
   };
 
   const editHotel = (element: HotelInterface) => {
-    setHotelDetails(element);
-    setModalHotelVisible(true);
-    setIsAdding(false);
+      setHotelDetails(element);
+      setModalHotelVisible(true);
+      setIsAdding(false);
   };
 
   const closeModalHotel = () => {
@@ -108,7 +108,7 @@ const HotelsPage: React.FC = () => {
         open={modalHotelVisible} 
         onCancel={closeModalHotel} 
         isAdding={isAdding}
-        hotelDetails={hotelDetails} 
+        hotelDetails={isAdding ? undefined : hotelDetails}
         />
     </div>
   );

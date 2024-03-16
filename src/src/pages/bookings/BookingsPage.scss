@@ -25,6 +25,9 @@
         &__button-actions {
             cursor: pointer;
             color: #3498db;
+            > label {
+                color: #3498db;
+            }
         }
 
         thead.ant-table-thead {

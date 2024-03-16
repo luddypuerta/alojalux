@@ -21,5 +21,16 @@ export const typeRoomData: TypeRoom[] = [
     {id: '3', name: 'Suite'},
 ]
 
+//Initial values
+
+export const roomInitialValues: RoomData = {
+    roomName: '',
+    roomType: '',
+    baseCost: 0,
+    taxes: 0,
+    images: [],
+    location: '',
+    status: true
+}
 
 

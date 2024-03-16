@@ -4,7 +4,7 @@ import { Form, Input, Select, Button, Upload, Checkbox } from 'antd';
 import { UploadOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 //Interfaces
-import { typeRoomData, RoomData } from '../../../../utils/interfaces/rooms/RoomDataInterface'
+import { typeRoomData, RoomData, roomInitialValues } from '../../../../utils/interfaces/rooms/RoomDataInterface'
 
 //Styles
 import './RoomsComponent.scss'
@@ -24,15 +24,8 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
     useEffect(() => {
         setRooms([getDefaultRoom()]);
     }, []);
-    const getDefaultRoom = (): RoomData => ({
-        roomName: '',
-        roomType: '',
-        baseCost: 0,
-        taxes: 0,
-        images: [],
-        location: '',
-        status: true
-    });
+
+    const getDefaultRoom = (): RoomData => (roomInitialValues);
 
     const onFinishHandler = (values: RoomData, index: number) => {
         const updatedRooms = [...rooms];

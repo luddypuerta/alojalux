@@ -1,3 +1,4 @@
+//Interfaces
 export interface HotelInterface {
     key: string;
     name: string;
@@ -22,6 +23,7 @@ export interface ColumnInterface {
     key: string;
 }
 
+//Data
 export const hotelData: HotelInterface[] = [
     {
         key: '1',
@@ -262,3 +264,19 @@ export const hotelColumns: ColumnInterface[] = [
         key: 'stars',
     },
 ];
+
+
+//Initial Values
+export const hotelInitialValues: HotelInterface = {
+    key: '',
+    name: '',
+    location: '',
+    stars: 0,
+    title: '',
+    description: '',
+    textOffer: '',
+    price: '',
+    image: '',
+    packagesIncluded: [],
+    status: true
+}
