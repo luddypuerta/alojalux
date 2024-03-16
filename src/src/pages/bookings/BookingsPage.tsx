@@ -63,7 +63,7 @@ const BookingsPage: React.FC = () => {
     key: 'actions',
     render: (record: BookingInterface) => (
       <div className='bookings-page__table__container-buttons'>
-        <Button className='bookings-page__table__button-actions' onClick={() => viewBookingDetails(record)} icon={<EyeOutlined />}></Button>
+        <Button className='bookings-page__table__button-actions' onClick={() => viewBookingDetails(record)} icon={<EyeOutlined />}>Ver detalles</Button>
       </div>
     ),
   };

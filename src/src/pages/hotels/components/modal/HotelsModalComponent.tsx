@@ -257,7 +257,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                         />
                         <div className='grid-x align-justify'>
                             <button onClick={handlePrev} className="button secondary hotels-modal__btn-control">Anterior</button>
-                            <button onClick={handleFinish} className="button primary hotels-modal__btn-control">{isAdding ? 'Añadir' : 'Editar'}</button>
+                            <button onClick={handleFinish} className="button primary hotels-modal__btn-control">{isAdding ? 'Guardar Hotel' : 'Actualizar Hotel'}</button>
                         </div>
                     </div>
                 )}

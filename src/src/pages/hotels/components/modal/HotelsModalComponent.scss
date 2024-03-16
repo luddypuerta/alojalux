@@ -73,6 +73,10 @@
             display: flex;
             align-items: center;
             margin-bottom: 1rem;
+
+            > label {
+                color: #34495E;
+            }
         }
     }
     &__input-package.ant-input{

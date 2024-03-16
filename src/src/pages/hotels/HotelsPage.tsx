@@ -47,9 +47,6 @@ const HotelsPage: React.FC = () => {
     setModalHotelVisible(false);
   };
 
-  const disableHotel = (record: HotelInterface) => {
-    console.log(record)
-  };
 
   const handleHotelChange = (value: string) => {
     setSelectedHotel(value);
@@ -62,8 +59,9 @@ const HotelsPage: React.FC = () => {
     key: 'actions',
     render: (record: HotelInterface) => (
       <div className='hotels-page__table__container-buttons'>
-        <Button className='hotels-page__table__button-actions' onClick={() => editHotel(record)} icon={<EditOutlined />}></Button>
-        <Button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)} icon={<StopOutlined />}></Button>
+        <Button 
+          className='hotels-page__table__button-actions' 
+          onClick={() => editHotel(record)} icon={<EditOutlined />}>Editar</Button>
       </div>
     ),
   };
@@ -104,12 +102,14 @@ const HotelsPage: React.FC = () => {
         ))}
       </Select>
       <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredHotels} />
-      <HotelModalComponent 
-        open={modalHotelVisible} 
-        onCancel={closeModalHotel} 
-        isAdding={isAdding}
-        hotelDetails={isAdding ? undefined : hotelDetails}
+      {modalHotelVisible &&
+        <HotelModalComponent
+          open={modalHotelVisible}
+          onCancel={closeModalHotel}
+          isAdding={isAdding}
+          hotelDetails={isAdding ? undefined : hotelDetails}
         />
+      }
     </div>
   );
 };
