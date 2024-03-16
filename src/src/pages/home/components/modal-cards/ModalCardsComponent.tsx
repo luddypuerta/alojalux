@@ -6,9 +6,14 @@ import { BookingInterface, GuestInterface, EmergencyContactInterface } from '../
 import React, { useState } from 'react';
 import { Modal, Form, Input, DatePicker, Select, Button, message, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import { v4 as uuidv4 } from 'uuid';
 
 //Styles
 import './ModalCardsComponent.scss'
+import { createBookingsService } from '../../../../services/bookings/bookingsService';
+import ErrorAlertComponent from '../../../../utils/alerts/error-alert.component';
+import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
+import { useSelector } from 'react-redux';
 
 const { Option } = Select;
 
@@ -16,9 +21,11 @@ const { Option } = Select;
 interface ModalCardsComponentProps {
   open: boolean;
   onCancel: () => void;
+  data:{name:string,idHotel:string,roomType:{id:string,name:string}}
 }
 
-const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCancel }) => {
+const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCancel, data }) => {
+  const roomSelect: RoomInterface[] = useSelector((state: any) => state?.room?.room); // Definimos el tipo de roomSelect como RoomInterface[]
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [guests, setGuests] = useState<GuestInterface[]>([
@@ -48,15 +55,47 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
     setGuests(updatedGuests);
   };
 
-  const handleFinish = (values: BookingInterface) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      message.success('Reserva realizada con éxito');
-      onCancel();
-      form.resetFields();
-    }, 2000);
+  const bookingRoom = (values:any) => {
+    const arrayGests:GuestInterface[] = guests ? guests : [];
+    const objContactEmergency:EmergencyContactInterface = {
+      name:values.emergencyContactName,
+      phone:values.emergencyContactPhone
+    }
+    const titularObject:any = arrayGests.find(gest => gest.isTitular === true);
+    const body: BookingInterface = {
+      key: uuidv4(),
+      hotel: 'Nombre Quedamo Hotel',
+      idHotel: data.idHotel,
+      guestName: titularObject?.name,
+      guestEmail: titularObject?.email,
+      guestTel: titularObject?.telephone,
+      documentType: titularObject?.documentType,
+      documentNumber: titularObject?.documentNumber,
+      checkInDate:  '15/03/2024',
+      checkOutDate: '16/03/2024',
+      roomName: data.name,
+      typeRoom: data.roomType,
+      guests: arrayGests,
+      emergencyContact: objContactEmergency
+    };
+    return body;
   };
+
+  const handleFinish = async (values:any) => {
+    setLoading(true);
+    try {
+        const dataCreateBooking = bookingRoom(values);
+        await createBookingsService(dataCreateBooking);
+        message.success('Reserva realizada con éxito');
+        onCancel();
+        form.resetFields();
+    } catch (error) {
+        ErrorAlertComponent();
+    } finally {
+        setLoading(false);
+    }
+};
+
 
   return (
     <Modal

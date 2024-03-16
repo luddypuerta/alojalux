@@ -2,17 +2,19 @@
 import ModalCardsComponent from '../modal-cards/ModalCardsComponent';
 import LayoutHomeComponent from '../../../../components/layout-home/LayoutHomeComponent';
 
-//Interfaces
-import { roomDetailData } from '../../../../utils/interfaces/rooms/RoomDetailDataInterface';
+//Interface
+import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
 
 //Libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaBed, FaCar, FaUsers, FaUtensils, FaWifi } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Styles
 import './RoomDetailsComponent.scss';
+import { getRoomById } from '../../../../redux/operations/roomOperations';
 
 const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -32,9 +34,17 @@ const getIconComponent = (iconName: string) => {
 };
 
 const RoomDetailsComponent: React.FC = () => {
+    const roomSelect: RoomInterface[] = useSelector((state: any) => state?.room?.room); // Definimos el tipo de roomSelect como RoomInterface[]
+    const dispatch = useDispatch();
+    const [useRoomSelected, setUseRoomSelected] = useState({name:'',idHotel:'',roomType: { id: '', name: '' }}); 
+    useEffect(() => {
+        dispatch<any>(getRoomById()); 
+      }, [dispatch]);
+
     const [modalCardVisible, setModalCardVisible] = useState<boolean>(false);
 
-    const openModalCard = () => {
+    const openModalCard = (room:any) => {
+        setUseRoomSelected(room);
         setModalCardVisible(true);
     };
 
@@ -52,7 +62,7 @@ const RoomDetailsComponent: React.FC = () => {
                     <h4 className='room-details__title-room'>Elige tu habitación de Preferencia</h4>
                 </div>
                 <div className='grid-x'>
-                    {roomDetailData.map(room => (
+                    {roomSelect.map(room => (
                         <div key={room.id} className="small-12 medium-6 large-4 room-details__card">
                             <Card className="room-details__content">
                                 <div className="room-details__image">
@@ -72,7 +82,7 @@ const RoomDetailsComponent: React.FC = () => {
                                         ))}
                                     </div>
                                     <p className="room-details__price">{room.price}</p>
-                                    <Button type="primary" className="room-details__button" onClick={openModalCard}>
+                                    <Button type="primary" className="room-details__button" onClick={() => openModalCard(room)}>
                                         Reservar Ahora
                                     </Button>
                                 </div>
@@ -81,7 +91,7 @@ const RoomDetailsComponent: React.FC = () => {
 
                     ))}
                 </div>
-                <ModalCardsComponent open={modalCardVisible} onCancel={closeModalCard} />
+                <ModalCardsComponent open={modalCardVisible} onCancel={closeModalCard} data={useRoomSelected}/>
             </div>
         </LayoutHomeComponent>
     );

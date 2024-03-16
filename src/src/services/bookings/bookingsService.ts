@@ -36,3 +36,8 @@ export const getAllBookingsService = async () => {
     }
 };
 
+
+export const createBookingsService = async (data:BookingInterface) => {
+    const response = await ApiService.apiFetch(`booking`, data, 'POST')
+    await response.json()
+};
