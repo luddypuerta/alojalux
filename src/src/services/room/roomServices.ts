@@ -3,7 +3,7 @@ import { ApiService } from "../ApiService";
 
 //Utils
 import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInterface";
-import { RoomInterface } from "../../utils/interfaces/room/RoomInterface";
+import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
 
 export const getRoomByIdService = async () => {
     const response = await ApiService.apiFetch(`room/hotel/6`, null, 'GET')

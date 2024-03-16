@@ -24,7 +24,7 @@ export const getAllBookingsService = async () => {
                     checkInDate: booking.checkInDate,
                     checkOutDate: booking.checkOutDate,
                     roomName: booking.roomName,
-                    typeRoom: booking.typeRoom,
+                    roomType: booking.roomType,
                     guests: booking.guests,
                     emergencyContact: booking.emergencyContact,
                 }

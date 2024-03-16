@@ -65,7 +65,7 @@ const BookingsModalComponent: React.FC<BookingsModalComponentProps> = ({ open, o
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Tipo de Habitación:</label>
-            <span className='cell small-6'>{bookingDetails.typeRoom.name}</span>
+            <span className='cell small-6'>{bookingDetails.roomType.name}</span>
           </div>
         </div>
         <div className='grid-x booking-modal__content'>

@@ -74,7 +74,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
       checkInDate:  '15/03/2024',
       checkOutDate: '16/03/2024',
       roomName: data.name,
-      typeRoom: data.roomType,
+      roomType: data.roomType,
       guests: arrayGests,
       emergencyContact: objContactEmergency
     };

@@ -11,7 +11,7 @@ export interface BookingInterface {
     checkInDate: string;
     checkOutDate: string;
     roomName: string;
-    typeRoom: TypeRoomInterface;
+    roomType: TypeRoomInterface;
     guests: GuestInterface[];
     emergencyContact: EmergencyContactInterface;
 }
@@ -74,7 +74,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-03-15',
 //         checkOutDate: '2024-03-20',
 //         roomName: 'Habitación Estándar',
-//         typeRoom: 'Sencilla',
+//         roomType: 'Sencilla',
 //         guests: [
 //             {
 //                 id: 1,
@@ -104,7 +104,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-04-10',
 //         checkOutDate: '2024-04-15',
 //         roomName: 'Suite Presidencial',
-//         typeRoom: 'Suite',
+//         roomType: 'Suite',
 //         guests: [
 //             {
 //                 id: 2,
@@ -144,7 +144,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-05-05',
 //         checkOutDate: '2024-05-10',
 //         roomName: 'Habitación de Lujo',
-//         typeRoom: 'Preferencial',
+//         roomType: 'Preferencial',
 //         guests: [
 //             {
 //                 id: 4,
@@ -184,7 +184,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-06-01',
 //         checkOutDate: '2024-06-05',
 //         roomName: 'Habitación Estándar',
-//         typeRoom: 'Sencilla',
+//         roomType: 'Sencilla',
 //         guests: [
 //             {
 //                 id: 6,
@@ -214,7 +214,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-07-10',
 //         checkOutDate: '2024-07-15',
 //         roomName: 'Habitación Deluxe',
-//         typeRoom: 'Suite',
+//         roomType: 'Suite',
 //         guests: [
 //             {
 //                 id: 7,
@@ -254,7 +254,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-08-20',
 //         checkOutDate: '2024-08-25',
 //         roomName: 'Habitación Estándar',
-//         typeRoom: 'Sencilla',
+//         roomType: 'Sencilla',
 //         guests: [
 //             {
 //                 id: 9,
@@ -294,7 +294,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-09-15',
 //         checkOutDate: '2024-09-20',
 //         roomName: 'Habitación de Lujo',
-//         typeRoom: 'Preferencial',
+//         roomType: 'Preferencial',
 //         guests: [
 //             {
 //                 id: 11,
@@ -334,7 +334,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-10-10',
 //         checkOutDate: '2024-10-15',
 //         roomName: 'Habitación Estándar',
-//         typeRoom: 'Sencilla',
+//         roomType: 'Sencilla',
 //         guests: [
 //             {
 //                 id: 13,
@@ -374,7 +374,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-11-05',
 //         checkOutDate: '2024-11-10',
 //         roomName: 'Habitación de Lujo',
-//         typeRoom: 'Preferencial',
+//         roomType: 'Preferencial',
 //         guests: [
 //             {
 //                 id: 15,
@@ -404,7 +404,7 @@ export const bookingColumns: ColumnInterface[] = [
 //         checkInDate: '2024-12-01',
 //         checkOutDate: '2024-12-06',
 //         roomName: 'Habitación Estándar',
-//         typeRoom: 'Sencilla',
+//         roomType: 'Sencilla',
 //         guests: [
 //             {
 //                 id: 16,
