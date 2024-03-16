@@ -21,10 +21,19 @@ interface HotelModalComponentProps {
     open: boolean;
     onCancel: () => void;
     isAdding: boolean;
+    hotelDetails?: HotelInterface;
 }
 
-const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCancel, isAdding }) => {
+const HotelModalComponent: React.FC<HotelModalComponentProps> = (
+    {   open, 
+        onCancel, 
+        isAdding,
+        hotelDetails
+    }) => {
+        
+    const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
+    const [newPackage, setNewPackage] = useState('');
     const [hotelData, setHotelData] = useState<HotelInterface>({
         key: '',
         name: '',
@@ -39,8 +48,12 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
         status: true,
     });
 
-    const [newPackage, setNewPackage] = useState('');
-
+    useEffect(() => {
+        if (hotelDetails) {
+            setHotelData(hotelDetails);
+            console.log('hotelData actualizado:', hotelDetails);
+        }
+    }, [hotelDetails]);
     const handleNext = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -107,7 +120,6 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
             }
         },
     };
-
     return (
         <Modal
             open={open}
@@ -125,11 +137,14 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
             <div>
                 {currentStep === 0 && (
                     <div className="grid-container">
-                        <Form onFinish={handleNext}>
+                        <Form onFinish={handleNext} initialValues={hotelData}>
                             <div className='grid-x hotels-modal__form'>
                                 <div className="cell small-12 medium-6">
                                     <Item label="Nombre del hotel" name="name" className='hotels-modal__content'>
-                                        <Input className='hotels-modal__content__input' value={hotelData.name} onChange={(e) => handleChange('name', e.target.value)} />
+                                        <Input 
+                                            className='hotels-modal__content__input' 
+                                            value={hotelData?.name}
+                                            onChange={(e) => handleChange('name', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-6">
@@ -137,7 +152,8 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
                                         <Input
                                             placeholder='Bogotá'
                                             className='hotels-modal__content__input-text'
-                                            value={hotelData.location} onChange={(e) => handleChange('location', e.target.value)} />
+                                            value={hotelData.location} 
+                                            onChange={(e) => handleChange('location', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-12">
@@ -145,7 +161,8 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
                                         <Input
                                             className='hotels-modal__content__input-text'
                                             placeholder='¡Relájate junto al mar!'
-                                            value={hotelData.title} onChange={(e) => handleChange('title', e.target.value)}
+                                            value={hotelData.title}
+                                            onChange={(e) => handleChange('title', e.target.value)}
                                         />
                                     </Item>
                                 </div>
@@ -153,7 +170,8 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = ({ open, onCance
                                     <Item label="Descripción de la reseña" name="description" className='hotels-modal__content'>
                                         <Input.TextArea
                                             placeholder='¡Relájate y rejuvenece en nuestro resort frente al mar en Barranquilla.!'
-                                            value={hotelData.description} onChange={(e) => handleChange('description', e.target.value)} />
+                                            value={hotelData.description} 
+                                            onChange={(e) => handleChange('description', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-12">

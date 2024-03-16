@@ -22,7 +22,9 @@ const HotelsPage: React.FC = () => {
   const [modalHotelVisible, setModalHotelVisible] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState<string>('');
+  const [hotelDetails, setHotelDetails] = useState<HotelInterface | undefined>(undefined);
 
+  //Data Redux
   const hotelsList = useSelector((state: any) => state.hotels.hotels);
   const dispatch = useDispatch();
 
@@ -35,7 +37,8 @@ const HotelsPage: React.FC = () => {
     setIsAdding(true);
   };
 
-  const editHotel = () => {
+  const editHotel = (element: HotelInterface) => {
+    setHotelDetails(element);
     setModalHotelVisible(true);
     setIsAdding(false);
   };
@@ -57,9 +60,9 @@ const HotelsPage: React.FC = () => {
   const actionColumn = {
     title: 'Acciones',
     key: 'actions',
-    render: (record: ColumnInterface) => (
+    render: (record: HotelInterface) => (
       <div className='hotels-page__table__container-buttons'>
-        <Button className='hotels-page__table__button-actions' onClick={editHotel} icon={<EditOutlined />}></Button>
+        <Button className='hotels-page__table__button-actions' onClick={() => editHotel(record)} icon={<EditOutlined />}></Button>
         <Button className='hotels-page__table__button-actions' onClick={() => disableHotel(record)} icon={<StopOutlined />}></Button>
       </div>
     ),
@@ -101,7 +104,12 @@ const HotelsPage: React.FC = () => {
         ))}
       </Select>
       <Table className='hotels-page__table' columns={columnsWithActions} dataSource={filteredHotels} />
-      <HotelModalComponent open={modalHotelVisible} onCancel={closeModalHotel} isAdding={isAdding} />
+      <HotelModalComponent 
+        open={modalHotelVisible} 
+        onCancel={closeModalHotel} 
+        isAdding={isAdding}
+        hotelDetails={hotelDetails} 
+        />
     </div>
   );
 };
