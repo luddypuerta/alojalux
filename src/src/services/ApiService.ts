@@ -3,7 +3,6 @@ const API_URL = `${import.meta.env.VITE_URL_BACKEND}`;
 export const ApiService = {
     apiFetch: async (endpoint: string, data: any, method: string = "GET"): Promise<Response> => {
         const url = `${API_URL}/${endpoint}`;
-        
         const requestOptions: RequestInit = {
             method,
             headers: {

@@ -5,7 +5,7 @@ import { ApiService } from "../ApiService";
 import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInterface";
 import { RoomInterface } from "../../utils/interfaces/rooms/RoomDataInterface";
 
-export const getRoomByIdService = async (id:number) => {
+export const getRoomByIdService = async (id:string) => {
     const response = await ApiService.apiFetch(`room/hotel/${id}`, null, 'GET')
     const {data: responseGetRoomById, errors, status }: ApiResponse = await response.json()
 
@@ -29,6 +29,33 @@ export const getRoomByIdService = async (id:number) => {
         }
     } else {
           throw errors
+    }
+};
+
+export const createRoomsService = async (data: RoomInterface[]) => {
+    try {
+        const response = await ApiService.apiFetch(`room`, data, 'POST');
+        const { errors, status }: ApiResponse = await response.json();
+        if (status) {
+            return status;
+        } else {
+            throw errors
+        }
+    } catch {
+        throw new Error('Error al crear las habitaciones');
+    }
+};
+export const updateRoomsService = async (data: RoomInterface[]) => {
+    try {
+        const response = await ApiService.apiFetch(`room`, data, 'PATCH');
+        const { errors, status }: ApiResponse = await response.json();
+        if (status) {
+            return status;
+        } else {
+            throw errors
+        }
+    } catch {
+        throw new Error('Error al actualizar las habitaciones');
     }
 };
 

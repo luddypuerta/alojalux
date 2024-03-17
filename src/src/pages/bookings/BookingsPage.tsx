@@ -23,80 +23,80 @@ import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 const { Option } = Select;
 
 const BookingsPage: React.FC = () => {
-  const [selectedHotel, setSelectedHotel] = useState<string>('');
-  const [modalBookingVisible, setModalBookingVisible] = useState(false);
-  const [bookingDetails, setBookingDetails] = useState<BookingInterface | null>(null);
-  const [bookingList, setBookings] = useState<BookingInterface[]>([]);
+    const [selectedHotel, setSelectedHotel] = useState<string>('');
+    const [modalBookingVisible, setModalBookingVisible] = useState(false);
+    const [bookingDetails, setBookingDetails] = useState<BookingInterface | null>(null);
+    const [bookingList, setBookings] = useState<BookingInterface[]>([]);
 
-  const hotelsList = useSelector((state: any) => state.hotels.hotels);
+    const hotelsList = useSelector((state: any) => state.hotels.hotels);
 
-  useEffect(() => {
-    getBookings();
-  }, []);
+    useEffect(() => {
+        getBookings();
+    }, []);
 
-  const getBookings = async () => {
-    try {
-      const responseAllBookings = await getAllBookingsService()
-      setBookings(responseAllBookings ? responseAllBookings : []);
-    } catch (error) {
-      ErrorAlertComponent()
-    }
-  };
+    const getBookings = async () => {
+        try {
+            const responseAllBookings = await getAllBookingsService()
+            setBookings(responseAllBookings ? responseAllBookings : []);
+        } catch (error) {
+            ErrorAlertComponent()
+        }
+    };
 
-  const hotelChange = (value: string) => {
-    setSelectedHotel(value);
-  };
+    const hotelChange = (value: string) => {
+        setSelectedHotel(value);
+    };
 
-  const viewBookingDetails = (element: BookingInterface) => {
-    setBookingDetails(element);
-    setModalBookingVisible(true);
-  };
+    const viewBookingDetails = (element: BookingInterface) => {
+        setBookingDetails(element);
+        setModalBookingVisible(true);
+    };
 
-  const closeModalBooking = () => {
-    setModalBookingVisible(false);
-  };
+    const closeModalBooking = () => {
+        setModalBookingVisible(false);
+    };
 
-  const filteredBookings = selectedHotel ? bookingList.filter(data => data.idHotel === selectedHotel) : bookingList;
+    const filteredBookings = selectedHotel ? bookingList.filter(data => data.idHotel === selectedHotel) : bookingList;
 
-  const actionColumn = {
-    title: 'Acciones',
-    key: 'actions',
-    render: (record: BookingInterface) => (
-      <div className='bookings-page__table__container-buttons'>
-        <Button className='bookings-page__table__button-actions' onClick={() => viewBookingDetails(record)} icon={<EyeOutlined />}>Ver detalles</Button>
-      </div>
-    ),
-  };
+    const actionColumn = {
+        title: 'Acciones',
+        key: 'actions',
+        render: (record: BookingInterface) => (
+            <div className='bookings-page__table__container-buttons'>
+                <Button className='bookings-page__table__button-actions' onClick={() => viewBookingDetails(record)} icon={<EyeOutlined />}>Ver detalles</Button>
+            </div>
+        ),
+    };
 
-  const columnsWithActions: ColumnInterface[] = [...bookingColumns, actionColumn];
+    const columnsWithActions: ColumnInterface[] = [...bookingColumns, actionColumn];
 
-  return (
-    <div className='bookings-page'>
-      <h4 className='bookings-page__title'>Lista de Reservas</h4>
-      <Select
-        className='bookings-page__hotel-selector'
-        placeholder='Seleccionar hotel'
-        onChange={hotelChange}
-        value={selectedHotel}
-      >
-        <Option
-          className='bookings-page__hotel-selector__option'
-          value=''>
-          Todos los hoteles
-        </Option>
-        {hotelsList.map((hotel: HotelInterface) => (
-          <Option
-            key={hotel.key}
-            className='bookings-page__hotel-selector__option'
-            value={hotel.key}>
-            {hotel.name}
-          </Option>
-        ))}
-      </Select>
-      <Table className='bookings-page__table' columns={columnsWithActions} dataSource={filteredBookings} />
-      <BookingsModalComponent open={modalBookingVisible} onCancel={closeModalBooking} bookingDetails={bookingDetails} />
-    </div>
-  );
+    return (
+        <div className='bookings-page'>
+            <h4 className='bookings-page__title'>Lista de Reservas</h4>
+            <Select
+                className='bookings-page__hotel-selector'
+                placeholder='Seleccionar hotel'
+                onChange={hotelChange}
+                value={selectedHotel}
+            >
+                <Option
+                    className='bookings-page__hotel-selector__option'
+                    value=''>
+                    Todos los hoteles
+                </Option>
+                {hotelsList.map((hotel: HotelInterface) => (
+                    <Option
+                        key={hotel.key}
+                        className='bookings-page__hotel-selector__option'
+                        value={hotel.key}>
+                        {hotel.name}
+                    </Option>
+                ))}
+            </Select>
+            <Table className='bookings-page__table' columns={columnsWithActions} dataSource={filteredBookings} />
+            <BookingsModalComponent open={modalBookingVisible} onCancel={closeModalBooking} bookingDetails={bookingDetails} />
+        </div>
+    );
 };
 
 export default BookingsPage;

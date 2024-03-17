@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { getRoomByIdService } from '../../services/room/roomServices';
 import { setRoom } from '../actions/roomActions';
 
-export const getRoomById = (id:number) => {
+export const getRoomById = (id:string) => {
   return async (dispatch: Dispatch<any>) => {
     try {
       const responseRoom = await getRoomByIdService(id);

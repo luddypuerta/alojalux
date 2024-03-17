@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 //Interfaces
 import { RoomInterface, roomInitialValues, typeRoomData } from '../../../../utils/interfaces/rooms/RoomDataInterface';
-import { HotelInterface } from '../../../../utils/interfaces/hotels/HotelDataInterface';
 
 //Styles
 import './RoomsComponent.scss'
@@ -14,13 +13,11 @@ import './RoomsComponent.scss'
 const { Option } = Select;
 const { Item } = Form;
 
-
 interface RoomsComponentProps {
-    hotelData: HotelInterface;
-    setHotelData: (data: any) => void;
+    updateRoomsData: (updatedRooms: RoomInterface[]) => void;
 }
 
-const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData}) => {
+const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
 
     //Data redux
@@ -31,17 +28,10 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
             setRooms(roomList);
         }else {
             setRooms([getDefaultRoom()]);
-        }        
+        }       
     }, []);
 
     const getDefaultRoom = (): RoomInterface => (roomInitialValues);
-
-    const onFinishHandler = (values: RoomInterface, index: number) => {
-        const updatedRooms = [...rooms];
-        updatedRooms[index] = values;
-        setRooms(updatedRooms);
-        setHotelData({ ...hotelData, rooms: updatedRooms });
-    };
 
     const handleRoomChange = (index: number, fieldName: string, value: any) => {
         const updatedRooms = rooms.map((room, i) => {
@@ -54,6 +44,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
             return room;
         });
         setRooms(updatedRooms);
+        updateRoomsData(updatedRooms);
     };
 
     const addRoom = () => {
@@ -63,7 +54,6 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
     const handleRemoveRoom = (index: number) => {
         const updatedRooms = rooms.filter((_, i) => i !== index);
         setRooms(updatedRooms);
-        setHotelData({ ...hotelData, rooms: updatedRooms });
     };
 
     return (
@@ -74,7 +64,6 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                     className='rooms__container-room'>
                     <Form
                         initialValues={room}
-                        onFinish={(values) => onFinishHandler(values, index)}
                         className='grid-x rooms__container-room__form'
                     >
                         <div className='cell small-12 medium-6'>
@@ -152,7 +141,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                                     className='rooms__container-upload'
                                     onChange={(info) => {
                                         if (info.file.status === 'done') {
-                                            const imageUrl = info.file.response.url;
+                                            const imageUrl = info.file.name;
                                             handleRoomChange(index, 'images', imageUrl);
                                         }
                                     }}
@@ -179,7 +168,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                                 <div className='rooms__checkbox'>
                                     <Checkbox
                                         checked={room?.status}
-                                        onChange={(e) => handleRoomChange(index, 'status', e.target.value)}
+                                        onChange={(e) => handleRoomChange(index, 'status', e.target.checked)}
                                     >
                                         Activo
                                     </Checkbox>

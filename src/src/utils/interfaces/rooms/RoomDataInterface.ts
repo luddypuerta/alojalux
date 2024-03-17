@@ -11,7 +11,7 @@ export interface roomTypeInterface {
 
 export interface RoomInterface {
     id: number;
-    idHotel: number;
+    idHotel: string;
     name: string;
     price: string;
     image: string;
@@ -32,7 +32,7 @@ export const typeRoomData: roomTypeInterface[] = [
 //Initial values
 export const roomInitialValues: RoomInterface = {
     id: 0,
-    idHotel: 0,
+    idHotel: '',
     name: '',
     price: '',
     image: '',

@@ -3,6 +3,7 @@ import RoomsComponent from '../rooms/RoomsComponent';
 
 //Interfaces
 import { HotelInterface, PackageInterface, hotelInitialValues } from '../../../../utils/interfaces/hotels/HotelDataInterface';
+import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomDataInterface';
 
 //Libraries
 import React, { useEffect, useState } from 'react';
@@ -11,8 +12,16 @@ import { v4 as uuidv4 } from 'uuid';
 import type { UploadProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
+//Services
+import { createHotelService, updateHotelService } from '../../../../services/hotels/hotelsService';
+import { createRoomsService, updateRoomsService } from '../../../../services/room/roomServices';
+
 //Styles
 import './HotelsModalComponent.scss'
+
+//Utils
+import ErrorAlertComponent from '../../../../utils/alerts/error-alert.component';
+import SuccessAlertComponent from '../../../../utils/alerts/success-alert.component';
 
 const { Step } = Steps;
 const { Item } = Form;
@@ -34,6 +43,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
     const [currentStep, setCurrentStep] = useState(0);
     const [newPackage, setNewPackage] = useState('');
     const [hotelData, setHotelData] = useState<HotelInterface>(hotelInitialValues);
+    const [roomsData, setRoomsData] = useState<RoomInterface[]>([]);
 
     useEffect(() => {
         if (isAdding) {
@@ -47,23 +57,59 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
     const clearForm = () => {
         setHotelData(hotelInitialValues);
     };
-    const handleNext = () => {
-        setCurrentStep(currentStep + 1);
-    };
 
-    const handlePrev = () => {
-        setCurrentStep(currentStep - 1);
-    };
-
-    const handleCancel = () => {
+    const cancelChanges = () => {
         onCancel();
         setCurrentStep(0);
     };
 
-    const handleFinish = () => {
+    const saveChanges  = () => {
+        
+        if (isAdding) {
+            createHotel(hotelData)
+        } else {
+            updateHotel(hotelData, roomsData)
+        }
+        clearForm();
         onCancel();
         setCurrentStep(0);
     };
+
+    const createHotel = async (hotelData: HotelInterface) => {
+        try {
+            const responseHotel = await createHotelService(hotelData);
+            if (responseHotel.id) {
+                createRooms(responseHotel.id);
+                SuccessAlertComponent('Hotel creado con exito');
+            }
+        } catch {
+            ErrorAlertComponent('Error al crear el hotel');
+        }
+    }
+
+    const updateHotel = async (hotelData: HotelInterface, roomsData: RoomInterface[]) => {
+        try {
+            const responseHotel = await updateHotelService(hotelData);
+            if (responseHotel) {
+                await updateRoomsService(roomsData);
+                SuccessAlertComponent('Hotel actualizado con exito');
+            }
+        } catch {
+            ErrorAlertComponent('Error al actualizar el hotel');
+        }
+    }
+
+    const createRooms = async (hotelKey: string) => {
+        try {
+            const roomsByHotel = roomsData.map((room) => ({
+                ...room,
+                idHotel: hotelKey
+            }));
+            await createRoomsService(roomsByHotel);
+        } catch {
+            ErrorAlertComponent('Error al crear las habitaciones');
+        }
+    }
 
     const handleChange = (fieldName: string, value: any) => {
         setHotelData({
@@ -113,10 +159,15 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
             }
         },
     };
+
+    const updateRoomsData = (updatedRooms: RoomInterface[]) => {
+        setRoomsData(updatedRooms);
+    };
+
     return (
         <Modal
             open={open}
-            onCancel={handleCancel}
+            onCancel={cancelChanges}
             className='hotels-modal'
             footer={null}
             destroyOnClose={true}
@@ -130,7 +181,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
             <div>
                 {currentStep === 0 && (
                     <div className="grid-container">
-                        <Form onFinish={handleNext} initialValues={hotelData}>
+                        <Form onFinish={saveChanges} initialValues={hotelData}>
                             <div className='grid-x hotels-modal__form'>
                                 <div className="cell small-12 medium-6">
                                     <Item label="Nombre del hotel" name="name" className='hotels-modal__content'>
@@ -246,18 +297,21 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                 </div>
                             </div>
                         </Form>
-                        <button onClick={handleNext} type="submit" className="button hotels-modal__btn-control">Siguiente</button>
+                        <button 
+                            onClick={() => setCurrentStep(currentStep + 1)} 
+                            type="submit" 
+                            className="button hotels-modal__btn-control"> Siguiente
+                        </button>
                     </div>
                 )}
                 {currentStep === 1 && (
                     <div>
-                        <RoomsComponent
-                            hotelData={hotelData}
-                            setHotelData={setHotelData}
-                        />
+                        <RoomsComponent updateRoomsData={updateRoomsData}/>
                         <div className='grid-x align-justify'>
-                            <button onClick={handlePrev} className="button secondary hotels-modal__btn-control">Anterior</button>
-                            <button onClick={handleFinish} className="button primary hotels-modal__btn-control">{isAdding ? 'Guardar Hotel' : 'Actualizar Hotel'}</button>
+                            <button 
+                                onClick={() => setCurrentStep(currentStep - 1)} 
+                                className="button secondary hotels-modal__btn-control">Anterior</button>
+                            <button onClick={saveChanges} className="button primary hotels-modal__btn-control">{isAdding ? 'Guardar Hotel' : 'Actualizar Hotel'}</button>
                         </div>
                     </div>
                 )}

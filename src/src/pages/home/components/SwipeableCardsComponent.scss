@@ -1,47 +1,47 @@
 .cards-container {
-  margin-top: 5rem;
+    margin-top: 5rem;
 
-  &__card {
-    border-radius: 10px;
-    border: 1px solid lightgray;
-    margin: 0 13px;
-    width: 95% !important;
+    &__card {
+        border-radius: 10px;
+        border: 1px solid lightgray;
+        margin: 0 13px;
+        width: 95% !important;
 
-    &__image {
-      height: 200px;
-      background-size: cover;
-      background-position: center center;
-      border-radius: 10px 10px 0 0;
+        &__image {
+            height: 200px;
+            background-size: cover;
+            background-position: center center;
+            border-radius: 10px 10px 0 0;
+        }
+
+        &__content {
+            background-color: #EDEDED;
+            padding: 10px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            color: #34495E;
+
+            label {
+                color: #34495E;
+            }
+        }
     }
 
-    &__content {
-      background-color: #EDEDED;
-      padding: 10px;
-      text-align: center;
-      border-radius: 0 0 10px 10px;
-      color: #34495E;
-
-      label {
+    &__swipeable-cards {
         color: #34495E;
-      }
-    }
-  }
+        font-weight: bold;
 
-  &__swipeable-cards {
-    color: #34495E;
-    font-weight: bold;
+        & .ant-carousel .slick-dots li button {
+            background-color: #1677FF;
+        }
 
-    & .ant-carousel .slick-dots li button {
-      background-color: #1677FF;
-    }
+        & .ant-carousel .slick-dots li.slick-active button {
+            background-color: #1677FF;
+            opacity: 1;
+        }
 
-    & .ant-carousel .slick-dots li.slick-active button {
-      background-color: #1677FF;
-      opacity: 1;
+        & .ant-carousel .slick-dots-bottom {
+            bottom: 20px;
+        }
     }
-
-    & .ant-carousel .slick-dots-bottom {
-      bottom: 20px;
-    }
-  }
 }

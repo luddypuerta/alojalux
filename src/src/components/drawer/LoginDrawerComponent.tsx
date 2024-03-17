@@ -15,70 +15,70 @@ import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 import SuccessAlertComponent from '../../utils/alerts/success-alert.component';
 
 interface LoginDrawerComponentProps {
-  isVisible: boolean;
-  onCloseDrawer: () => void;
+    isVisible: boolean;
+    onCloseDrawer: () => void;
 }
 
 const LoginDrawerComponent: React.FC<LoginDrawerComponentProps> = ({ isVisible, onCloseDrawer }) => {
-  const [form] = Form.useForm<FormInstance>();
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const [form] = Form.useForm<FormInstance>();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-  const authLogin = async (values: any) => {
+    const authLogin = async (values: any) => {
 
-    try {
-      const { password, username } = values
-      setLoading(true);
-  
-      const responseLogin = await authService(username, password)
-      if (responseLogin) {
-        localStorage.setItem("token", responseLogin?.token);
-        setLoading(false);
-        navigate('/admin/hotels');
-        SuccessAlertComponent("¡Bienvenido a la administración!", "Has iniciado sesión exitosamente.");
-      }
-    } catch (error: any) {
-      setLoading(false);
-      if (error && error.code === 'US-0001') {
-        ErrorAlertComponent("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
-      } else {
-        ErrorAlertComponent("Ocurrió un error en el servidor. Por favor, inténtalo de nuevo más tarde.");
-      }
-    }
-};
+        try {
+            const { password, username } = values
+            setLoading(true);
 
-  return (
-    <Drawer 
-      className='login-drawer'
-      title="Iniciar Sesión" onClose={onCloseDrawer} open={isVisible}>
-      <Form 
-        className='grid-x login-drawer__form'
-        form={form} onFinish={authLogin}
-        >
-        <Form.Item
-          label="Usuario"
-          name="username"
-          rules={[{ required: true, message: 'Por favor ingresa tu usuario' }]}
-        >
-          <Input />
-        </Form.Item>
+            const responseLogin = await authService(username, password)
+            if (responseLogin) {
+                localStorage.setItem("token", responseLogin?.token);
+                setLoading(false);
+                navigate('/admin/hotels');
+                SuccessAlertComponent("¡Bienvenido a la administración!", "Has iniciado sesión exitosamente.");
+            }
+        } catch (error: any) {
+            setLoading(false);
+            if (error && error.code === 'US-0001') {
+                ErrorAlertComponent("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
+            } else {
+                ErrorAlertComponent("Ocurrió un error en el servidor. Por favor, inténtalo de nuevo más tarde.");
+            }
+        }
+    };
 
-        <Form.Item
-          label="Contraseña"
-          name="password"
-          rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
-        >
-          <Input.Password />
-        </Form.Item>
+    return (
+        <Drawer
+            className='login-drawer'
+            title="Iniciar Sesión" onClose={onCloseDrawer} open={isVisible}>
+            <Form
+                className='grid-x login-drawer__form'
+                form={form} onFinish={authLogin}
+            >
+                <Form.Item
+                    label="Usuario"
+                    name="username"
+                    rules={[{ required: true, message: 'Por favor ingresa tu usuario' }]}
+                >
+                    <Input />
+                </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Iniciar sesión
-          </Button>
-        </Form.Item>
-      </Form>
-    </Drawer>
-  );
+                <Form.Item
+                    label="Contraseña"
+                    name="password"
+                    rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
+                >
+                    <Input.Password />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={loading}>
+                        Iniciar sesión
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Drawer>
+    );
 };
 
 export default LoginDrawerComponent;
