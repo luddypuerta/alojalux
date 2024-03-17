@@ -29,7 +29,8 @@ interface ModalCardsComponentProps {
             value: string,
             label: string
         },
-        dataHotelSelected: { name: string }
+        dataHotelSelected: { name: string },
+        selectedDates: { startDate: string, endDate: string }
     }
 }
 
@@ -79,8 +80,8 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
             telephone: titularObject?.telephone,
             documentType: titularObject?.documentType,
             documentNumber: titularObject?.documentNumber,
-            checkInDate: '15/03/2024',
-            checkOutDate: '16/03/2024',
+            checkInDate: data.selectedDates.startDate,
+            checkOutDate: data.selectedDates.endDate,
             roomName: data.roomName,
             roomType: data.roomType,
             guests: arrayGuests,

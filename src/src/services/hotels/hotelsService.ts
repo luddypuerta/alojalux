@@ -5,9 +5,9 @@ import { ApiService } from "../ApiService";
 import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInterface";
 import { HotelInterface } from "../../utils/interfaces/hotels/HotelDataInterface";
 
-export const getAllHotelsService = async () => {
+export const getAllHotelsService = async (city?: string) => {
     try {
-        const response = await ApiService.apiFetch(`hotel`, null, 'GET');
+        const response = await ApiService.apiFetch(`hotel?location=${city}`, null, 'GET');
         const { data: responseGetAllHotels, errors, status }: ApiResponse = await response.json();
 
         if (responseGetAllHotels && status) {

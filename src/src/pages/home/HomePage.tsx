@@ -13,6 +13,7 @@ import { useState } from 'react';
 import esES from 'antd/lib/locale/es_ES';
 import { BankOutlined, UserOutlined } from '@ant-design/icons';
 import { FaArrowLeft } from 'react-icons/fa';
+import dayjs from 'dayjs';
 
 //Services
 import { getAllSitesService, getDataSitesService } from '../../services/home/homeServices';
@@ -25,6 +26,7 @@ import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 import { CardSiteInterface } from '../../utils/interfaces/home/CardDataInterface';
 
 const { RangePicker } = DatePicker;
+const getCurrentDate = () => dayjs();
 const { Option } = Select;
 
 const HomePage: React.FC = () => {
@@ -41,22 +43,9 @@ const HomePage: React.FC = () => {
     const MAX_CHILD_AGE = 17;
     const childAgeOptions = Array.from({ length: MAX_CHILD_AGE + 1 }, (_, i) => i);
     const [ cards, setCards ] = useState<CardSiteInterface[]>([]);
+    const [datesFormatted, setDatesFormatted] = useState({});
+    const [selectedDates, setSelectedDates] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null]>([null, null]);
 
-    const addAdult = () => {
-        setNumAdults(prevNumAdults => prevNumAdults + 1);
-    };
-
-    const removeAdult = () => {
-        setNumAdults(prevNumAdults => Math.max(prevNumAdults - 1, 0));
-    };
-
-    const addRoom = () => {
-        setNumRooms(prevNumRooms => prevNumRooms + 1);
-    };
-
-    const removeRoom = () => {
-        setNumRooms(prevNumRooms => Math.max(prevNumRooms - 1, 0));
-    };
 
     const addChild = () => {
         if (numChildren < 100) {
@@ -110,7 +99,28 @@ const HomePage: React.FC = () => {
         setSearchText(value);
     };
 
+    const selectDateChange = (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null]) => {
+        setSelectedDates(dates);
+    };
+
+    const getFormattedDates = () => {
+        if ((selectedDates && selectedDates[0] && selectedDates[1])) {
+            const startDate = selectedDates[0].format('YYYY-MM-DD');
+            const endDate = selectedDates[1].format('YYYY-MM-DD');
+            return { startDate, endDate };
+        }
+        return { startDate: '', endDate: '' };
+    };
     const searchAccommodation = () => {
+
+        const formattedDates = getFormattedDates();
+        const { startDate, endDate } = formattedDates;
+
+        if (!startDate || !endDate || !searchText) {
+            ErrorAlertComponent('Por favor complete todos los campos requeridos', '');
+            return;
+        }
+        setDatesFormatted(formattedDates);
         setIsSearch(prev => !prev);
     };
 
@@ -176,9 +186,7 @@ const HomePage: React.FC = () => {
                             <div className='cell small-12 large-3'>
                                 <ConfigProvider locale={esES}>
                                     <RangePicker 
-                                        onChange={(date) => {
-                                            console.log('Date in array:', date);
-                                        }}
+                                        onChange={(selectDateChange)}
                                     />
                                 </ConfigProvider>
                             </div>
@@ -200,13 +208,13 @@ const HomePage: React.FC = () => {
                                             <label className='cell small-6 home-page__selection-panel__title'>Habitaciones</label>
                                             <div className='cell small-6 grid-x text-center'>
                                                 <div className='cell small-4'>
-                                                    <Button className='home-page__selection-panel__button-control' onClick={removeRoom}>-</Button>
+                                                    <Button className='home-page__selection-panel__button-control' onClick={() =>  setNumRooms(prevNumRooms => Math.max(prevNumRooms - 1, 1))}>-</Button>
                                                 </div>
                                                 <div className='cell small-4' >
                                                     <InputNumber className='home-page__selection-panel__number-field' min={1} value={numRooms} onChange={numRoomsChange} />
                                                 </div>
                                                 <div className='cell small-4' >
-                                                    <Button className='home-page__selection-panel__button-control' onClick={addRoom}>+</Button>
+                                                    <Button className='home-page__selection-panel__button-control' onClick={() => setNumRooms(prevNumRooms => prevNumRooms + 1)}>+</Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -214,13 +222,13 @@ const HomePage: React.FC = () => {
                                             <label className='cell small-6 home-page__selection-panel__title'>Adultos</label>
                                             <div className='cell small-6 grid-x text-center'>
                                                 <div className='cell small-4'>
-                                                    <Button className='home-page__selection-panel__button-control' onClick={removeAdult}>-</Button>
+                                                    <Button className='home-page__selection-panel__button-control' onClick={() => setNumAdults(prevNumAdults => Math.max(prevNumAdults - 1, 1))}>-</Button>
                                                 </div>
                                                 <div className='cell small-4' >
                                                     <InputNumber className='home-page__selection-panel__number-field' min={1} value={numAdults} onChange={numAdultsChange} />
                                                 </div>
                                                 <div className='cell small-4' >
-                                                    <Button className='home-page__selection-panel__button-control' onClick={addAdult}>+</Button>
+                                                    <Button className='home-page__selection-panel__button-control' onClick={() => setNumAdults(prevNumAdults => prevNumAdults + 1)}>+</Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +286,7 @@ const HomePage: React.FC = () => {
                                     <FaArrowLeft /> Volver
                                 </button>
                             </div>
-                            <DescriptiveCardsComponent />
+                            <DescriptiveCardsComponent location={searchText} selectedDates={datesFormatted} />
                         </>
                     ) : (
                         <SwipeableCardsComponent cards={cards} />

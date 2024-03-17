@@ -38,13 +38,15 @@ const getIconComponent = (iconName: string) => {
 const RoomDetailsComponent: React.FC = () => {
     let { state } = useLocation();
     const dataHotelSelected = state.some;
+    const selectedDates = state.selectedDates;
     const roomSelect: RoomInterface[] = useSelector((state: any) => state?.room?.room);
     const dispatch = useDispatch();
     const [useRoomSelected, setUseRoomSelected] = useState({
         roomName:'',
         idHotel:'',
         roomType: { value: '', label: '' },
-        dataHotelSelected:{name: ''}
+        dataHotelSelected:{name: ''},
+        selectedDates: { startDate: '', endDate: '' }
     }); 
 
     useEffect(() => {
@@ -54,7 +56,7 @@ const RoomDetailsComponent: React.FC = () => {
     const [modalCardVisible, setModalCardVisible] = useState<boolean>(false);
 
     const openModalCard = (room:any, dataHotelSelected:any) => {
-        const data = {...room, dataHotelSelected}
+        const data = {...room, dataHotelSelected, selectedDates}
         setUseRoomSelected(data);
         setModalCardVisible(true);
     };
