@@ -1,5 +1,7 @@
-import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
-import { SET_ROOM } from "../actionTypes/roomActionTypes";
+//Interfaces
+import { RoomInterface } from "../../utils/interfaces/rooms/RoomDataInterface";
+
+import { SET_ROOM, RESET_ROOM } from "../actionTypes/roomActionTypes";
 
 interface RoomState {
   room: RoomInterface[];
@@ -15,6 +17,10 @@ const roomReducer = (state = initialState, action: any): RoomState => {
       return {
         ...state,
         room: action.payload,
+      };
+    case RESET_ROOM:
+      return {
+        ...initialState,
       };
     default:
       return state;

@@ -3,9 +3,9 @@ import { ApiService } from "../ApiService";
 
 //Utils
 import { ApiResponse } from "../../utils/interfaces/apiResponse/ApiResponseInterface";
-import { RoomInterface } from "../../utils/interfaces/rooms/RoomInterface";
+import { RoomInterface } from "../../utils/interfaces/rooms/RoomDataInterface";
 
-export const getRoomByIdService = async (id: number) => {
+export const getRoomByIdService = async (id:number) => {
     const response = await ApiService.apiFetch(`room/hotel/${id}`, null, 'GET')
     const {data: responseGetRoomById, errors, status }: ApiResponse = await response.json()
 
@@ -21,7 +21,8 @@ export const getRoomByIdService = async (id: number) => {
                     status: room.status,
                     packagesIncluded: room.packagesIncluded,
                     taxes:room.taxes,
-                    roomType:room.roomType
+                    roomType:room.roomType,
+                    location:room.location
                 }
             });
             return responseRoom

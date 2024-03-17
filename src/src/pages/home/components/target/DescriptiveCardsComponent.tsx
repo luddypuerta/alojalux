@@ -1,21 +1,34 @@
+//Interfaces
+import { HotelInterface } from '../../../../utils/interfaces/hotels/HotelDataInterface';
+
 //Libraries
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card } from "antd";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Styles
 import "./DescriptiveCardsComponent.scss";
 
-//Utils
-import { hotelData } from '../../../../utils/interfaces/hotels/HotelDataInterface'
+//Redux
+import { getHotels } from '../../../../redux/operations/hotelOperations';
 
 const DescriptiveCardsComponent: React.FC = () => {
+  const hotelsList: HotelInterface[] = useSelector((state: any) => state.hotels.hotels);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch<any>(getHotels()); 
+  }, [dispatch]);
+
+  const filteredHotels = hotelsList.filter(hotel => hotel.status !== false);
 
   return (
     <div className="grid-container align-center-middle card-description">
-      {hotelData.map((hotel,index)=>{
+      {filteredHotels.map((hotel:any,index:any)=>{
         return(
-          <Link to="/room-details" key={hotel?.key}>
+          <Link to="/room-details" state={{ some: hotel }} key={hotel?.key}>
             <Card
               key={index}
               type="inner"
@@ -32,7 +45,7 @@ const DescriptiveCardsComponent: React.FC = () => {
                   <h4>{hotel?.name}</h4>
                   <span>{hotel?.location}</span>
                   <div className="grid-x card-description__tags align-middle card-description__sections">            
-                    {hotel.packagesIncluded.map((item, index) => (
+                    {hotel.packagesIncluded.map((item:any, index:any) => (
                       <div key={item?.id}>
                         <span className="card-description__tags__text">{item?.name}</span>
                         {index < hotel.packagesIncluded.length - 1 && <span>, &nbsp; </span>}

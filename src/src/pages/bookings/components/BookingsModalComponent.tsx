@@ -41,15 +41,15 @@ const BookingsModalComponent: React.FC<BookingsModalComponentProps> = ({ open, o
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Nombre del Titular:</label>
-            <span className='cell small-6'>{bookingDetails.guestName}</span>
+            <span className='cell small-6'>{bookingDetails.name}</span>
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Correo del Titular:</label>
-            <span className='cell small-6'>{bookingDetails.guestEmail}</span>
+            <span className='cell small-6'>{bookingDetails.email}</span>
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Teléfono del Titular:</label>
-            <span className='cell small-6'>{bookingDetails.guestTel}</span>
+            <span className='cell small-6'>{bookingDetails.telephone}</span>
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Fecha de Entrada:</label>
@@ -65,7 +65,7 @@ const BookingsModalComponent: React.FC<BookingsModalComponentProps> = ({ open, o
           </div>
           <div className='cell small-12 medium-6 grid-x'>
             <label className='cell small-6 booking-modal__label'>Tipo de Habitación:</label>
-            <span className='cell small-6'>{bookingDetails.roomType.name}</span>
+            <span className='cell small-6'>{bookingDetails.roomType.label}</span>
           </div>
         </div>
         <div className='grid-x booking-modal__content'>

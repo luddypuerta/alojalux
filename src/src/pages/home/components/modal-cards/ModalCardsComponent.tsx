@@ -6,26 +6,34 @@ import { BookingInterface, GuestInterface, EmergencyContactInterface } from '../
 import React, { useState } from 'react';
 import { Modal, Form, Input, DatePicker, Select, Button, message, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { v4 as uuidv4 } from 'uuid';
+
+//Services
+import { createBookingsService } from '../../../../services/bookings/bookingsService';
 
 //Styles
 import './ModalCardsComponent.scss'
-import { createBookingsService } from '../../../../services/bookings/bookingsService';
+
+//Utils
 import ErrorAlertComponent from '../../../../utils/alerts/error-alert.component';
-import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
-import { useSelector } from 'react-redux';
 
 const { Option } = Select;
-
 
 interface ModalCardsComponentProps {
   open: boolean;
   onCancel: () => void;
-  data:{name:string,idHotel:string,roomType:{id:string,name:string}}
+  data: {
+    roomName: string,
+    idHotel: string,
+    roomType:
+    {
+      value: string,
+      label: string
+    },
+    dataHotelSelected: { name: string }
+  }
 }
 
 const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCancel, data }) => {
-  const roomSelect: RoomInterface[] = useSelector((state: any) => state?.room?.room); // Definimos el tipo de roomSelect como RoomInterface[]
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [guests, setGuests] = useState<GuestInterface[]>([
@@ -55,46 +63,46 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
     setGuests(updatedGuests);
   };
 
-  const bookingRoom = (values:any) => {
-    const arrayGests:GuestInterface[] = guests ? guests : [];
-    const objContactEmergency:EmergencyContactInterface = {
-      name:values.emergencyContactName,
-      phone:values.emergencyContactPhone
+  const bookingRoom = (values: any) => {
+    const arrayGuests: GuestInterface[] = guests ? guests : [];
+
+    const objContactEmergency: EmergencyContactInterface = {
+      name: values.emergencyContactName,
+      phone: values.emergencyContactPhone
     }
-    const titularObject:any = arrayGests.find(gest => gest.isTitular === true);
+    const titularObject: any = arrayGuests.find(gest => gest.isTitular === true);
     const body: BookingInterface = {
-      key: uuidv4(),
-      hotel: 'Nombre Quedamo Hotel',
+      hotel: data?.dataHotelSelected.name,
       idHotel: data.idHotel,
-      guestName: titularObject?.name,
-      guestEmail: titularObject?.email,
-      guestTel: titularObject?.telephone,
+      name: titularObject?.name,
+      email: titularObject?.email,
+      telephone: titularObject?.telephone,
       documentType: titularObject?.documentType,
       documentNumber: titularObject?.documentNumber,
-      checkInDate:  '15/03/2024',
+      checkInDate: '15/03/2024',
       checkOutDate: '16/03/2024',
-      roomName: data.name,
+      roomName: data.roomName,
       roomType: data.roomType,
-      guests: arrayGests,
+      guests: arrayGuests,
       emergencyContact: objContactEmergency
     };
     return body;
   };
 
-  const handleFinish = async (values:any) => {
+  const handleFinish = async (values: BookingInterface) => {
     setLoading(true);
     try {
-        const dataCreateBooking = bookingRoom(values);
-        await createBookingsService(dataCreateBooking);
-        message.success('Reserva realizada con éxito');
-        onCancel();
-        form.resetFields();
+      const dataCreateBooking = bookingRoom(values);
+      await createBookingsService(dataCreateBooking);
+      message.success('Reserva realizada con éxito');
+      onCancel();
+      form.resetFields();
     } catch (error) {
-        ErrorAlertComponent();
+      ErrorAlertComponent();
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
 
   return (
@@ -118,7 +126,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
                 <Form.Item
                   className='modal-cards__label label-guests'
                   label="Nombres y Apellidos"
-                  name={`guestName${guest.id}`}
+                  name={`name${guest.id}`}
                   rules={[{ required: true, message: 'Por favor ingresa los nombres y apellidos del huésped' }]}>
                   <Input
                     className='modal-cards__input'
@@ -146,7 +154,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
                 <Form.Item
                   className='modal-cards__label'
                   label="Email"
-                  name={`guestEmail${guest.id}`}
+                  name={`email${guest.id}`}
                   rules={[{ required: true, type: 'email', message: 'Por favor ingresa un email válido' }]}>
                   <Input
                     className='modal-cards__input'
@@ -215,7 +223,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
               </div>
               {guest.id > 1 && (
                 <div className="modal-cards__btn-delete" style={{ marginTop: '32px' }}>
-                  <Button onClick={() => handleDeleteGuest(guest.id)}>
+                  <Button onClick={() => handleDeleteGuest(guest.id )}>
                     <DeleteOutlined /> Eliminar huésped
                   </Button>
                 </div>

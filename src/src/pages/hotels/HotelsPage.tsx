@@ -3,17 +3,18 @@ import HotelModalComponent from './components/modal/HotelsModalComponent';
 
 //Interfaces
 import { ColumnInterface, HotelInterface, hotelColumns } from '../../utils/interfaces/hotels/HotelDataInterface';
-import { RoomInterface } from '../../utils/interfaces/rooms/RoomInterface';
 
 //Libraries
 import { useEffect, useState } from 'react';
 import { Table, Button, Select } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 
 //Redux
 import { getHotels } from '../../redux/operations/hotelOperations';
 import { getRoomById } from '../../redux/operations/roomOperations';
+import { resetRoom, RoomAction } from '../../redux/actions/roomActions';
 
 //Styles
 import './HotelsPage.scss'
@@ -28,7 +29,8 @@ const HotelsPage: React.FC = () => {
 
   //Data Redux
   const hotelsList = useSelector((state: any) => state.hotels.hotels);
-  const roomList: RoomInterface[] = useSelector((state: any) => state?.room?.room);
+
+  const dispatchRoom: Dispatch<RoomAction> = useDispatch();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const HotelsPage: React.FC = () => {
   }
 
   const closeModalHotel = () => {
+    dispatchRoom(resetRoom());
     setModalHotelVisible(false);
   };
 
@@ -113,7 +116,6 @@ const HotelsPage: React.FC = () => {
           onCancel={closeModalHotel}
           isAdding={isAdding}
           hotelDetails={hotelDetails}
-          roomList={roomList}
         />
     </div>
   );

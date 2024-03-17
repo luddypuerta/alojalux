@@ -1,36 +1,46 @@
-//Interfaces
-export interface RoomData {
-    roomName: string;
-    roomType: string;
-    baseCost: number;
-    taxes: number;
-    images: any[];
-    location : string;
-    status: boolean;
+// Interfaces
+export interface PackagesIncludedInterface {
+    name: string;
+    icon: string;
 }
 
-export interface TypeRoom {
-    id: string;
+export interface roomTypeInterface {
+    value: string;
+    label: string;
+}
+
+export interface RoomInterface {
+    id: number;
+    idHotel: number;
     name: string;
+    price: string;
+    image: string;
+    status: boolean;
+    packagesIncluded: PackagesIncludedInterface[];
+    taxes:string;
+    roomType:roomTypeInterface
+    location: string
 }
 
 //Data
-export const typeRoomData: TypeRoom[] = [
-    {id: '1', name: 'Sencilla'},
-    {id: '2', name: 'Preferencial'},
-    {id: '3', name: 'Suite'},
+export const typeRoomData: roomTypeInterface[] = [
+    {value: '1', label: 'Sencilla'},
+    {value: '2', label: 'Preferencial'},
+    {value: '3', label: 'Suite'},
 ]
 
 //Initial values
-
-export const roomInitialValues: RoomData = {
-    roomName: '',
-    roomType: '',
-    baseCost: 0,
-    taxes: 0,
-    images: [],
-    location: '',
-    status: true
+export const roomInitialValues: RoomInterface = {
+    id: 0,
+    idHotel: 0,
+    name: '',
+    price: '',
+    image: '',
+    status: true,
+    packagesIncluded: [],
+    taxes: '',
+    roomType: {value: '1', label: 'Sencilla'},
+    location: ''
 }
 
 

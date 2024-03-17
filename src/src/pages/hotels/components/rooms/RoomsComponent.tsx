@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, Button, Upload, Checkbox } from 'antd';
 import { UploadOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 //Interfaces
-import { typeRoomData, RoomData, roomInitialValues } from '../../../../utils/interfaces/rooms/RoomDataInterface'
-import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomInterface';
+import { RoomInterface, roomInitialValues, typeRoomData } from '../../../../utils/interfaces/rooms/RoomDataInterface';
 import { HotelInterface } from '../../../../utils/interfaces/hotels/HotelDataInterface';
 
 //Styles
@@ -18,19 +18,25 @@ const { Item } = Form;
 interface RoomsComponentProps {
     hotelData: HotelInterface;
     setHotelData: (data: any) => void;
-    roomList: RoomInterface[]
 }
 
-const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData, roomList}) => {
-    const [rooms, setRooms] = useState<RoomData[]>([]);
+const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData}) => {
+    const [rooms, setRooms] = useState<RoomInterface[]>([]);
+
+    //Data redux
+    const roomList: RoomInterface[] = useSelector((state: any) => state?.room?.room);
 
     useEffect(() => {
-        setRooms([getDefaultRoom()]);
+        if(roomList.length > 0) {
+            setRooms(roomList);
+        }else {
+            setRooms([getDefaultRoom()]);
+        }        
     }, []);
 
-    const getDefaultRoom = (): RoomData => (roomInitialValues);
+    const getDefaultRoom = (): RoomInterface => (roomInitialValues);
 
-    const onFinishHandler = (values: RoomData, index: number) => {
+    const onFinishHandler = (values: RoomInterface, index: number) => {
         const updatedRooms = [...rooms];
         updatedRooms[index] = values;
         setRooms(updatedRooms);
@@ -40,7 +46,10 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
     const handleRoomChange = (index: number, fieldName: string, value: any) => {
         const updatedRooms = rooms.map((room, i) => {
             if (i === index) {
-                return { ...room, [fieldName]: value };
+                return { ...room, [fieldName]: fieldName === 'roomType' ? {
+                    value: value.value,
+                    label: value.label
+                } : value };
             }
             return room;
         });
@@ -70,14 +79,14 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                     >
                         <div className='cell small-12 medium-6'>
                             <Item
-                                name="roomName"
+                                name="name"
                                 label="Nombre de la habitación"
                                 className='rooms__content'
                                 rules={[{ required: true, message: 'Por favor ingresa el nombre de la habitación' }]}>
                                 <Input
                                     className='rooms__container-room__input'
-                                    value={room?.roomName}
-                                    onChange={(e) => handleRoomChange(index, 'roomName', e.target.value)}
+                                    value={room?.name}
+                                    onChange={(e) => handleRoomChange(index, 'name', e.target.value)}
                                 />
                             </Item>
                         </div>
@@ -88,17 +97,19 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                                 className='rooms__content'
                                 rules={[{ required: true, message: 'Por favor selecciona el tipo de habitación' }]}>
                                 <Select
+                                    labelInValue
                                     className='rooms__container-room__input-text'
                                     placeholder='Seleccionar Habitación'
                                     onChange={(value) => handleRoomChange(index, 'roomType', value)}
-                                    value={room?.roomType}
+                                    value={room?.roomType?.value}
                                 >
                                     {typeRoomData.map(type => (
                                         <Option
-                                            key={type.id}
+                                            key={type.value}
                                             className='rooms__container-room__option'
-                                            value={type.id}>
-                                            {type.name}
+                                            value={type.value}
+                                        >
+                                            {type.label}
                                         </Option>
                                     ))}
                                 </Select>
@@ -106,14 +117,14 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ hotelData, setHotelData
                         </div>
                         <div className='cell small-12 medium-6'>
                             <Item
-                                name="baseCost" label="Costo base"
+                                name="price" label="Costo base"
                                 className='rooms__content'
                                 rules={[{ required: true, message: 'Por favor ingresa el costo base' }]}>
                                 <Input
                                     type="number"
                                     className='rooms__container-room__input'
-                                    value={room?.baseCost}
-                                    onChange={(e) => handleRoomChange(index, 'baseCost', e.target.value)}
+                                    value={room?.price}
+                                    onChange={(e) => handleRoomChange(index, 'price', e.target.value)}
                                 />
                             </Item>
                         </div>

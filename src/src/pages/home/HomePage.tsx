@@ -175,7 +175,11 @@ const HomePage: React.FC = () => {
                             </div>
                             <div className='cell small-12 large-3'>
                                 <ConfigProvider locale={esES}>
-                                    <RangePicker />
+                                    <RangePicker 
+                                        onChange={(date) => {
+                                            console.log('Date in array:', date);
+                                        }}
+                                    />
                                 </ConfigProvider>
                             </div>
                             <div className='cell small-12 large-5 grid-x home-page__panel-search'>
@@ -187,7 +191,7 @@ const HomePage: React.FC = () => {
                                         <span> {numChildren} niños </span>
                                     </button>
                                 </div>
-                                <button className='cell small-3 button home-page__button-search' onClick={searchAccommodation}>
+                                <button className='cell small-3 button home-page__button-search' onClick={(()=>{searchAccommodation()})}>
                                     Buscar
                                 </button>
                                 {isVisible && (
