@@ -1,7 +1,10 @@
+//Components
+import FileUploaderComponent from '../../../../components/upload-file/UploadFile.component';
+
 //Libraries
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select, Button, Upload, Checkbox } from 'antd';
-import { UploadOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Form, Input, Select, Button, Checkbox, UploadFile } from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 //Interfaces
@@ -26,6 +29,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
     useEffect(() => {
         if(roomList.length > 0) {
             setRooms(roomList);
+            updateRoomsData(roomList);
         }else {
             setRooms([getDefaultRoom()]);
         }       
@@ -33,7 +37,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
 
     const getDefaultRoom = (): RoomInterface => (roomInitialValues);
 
-    const handleRoomChange = (index: number, fieldName: string, value: any) => {
+    const roomChange = (index: number, fieldName: string, value: any) => {
         const updatedRooms = rooms.map((room, i) => {
             if (i === index) {
                 return { ...room, [fieldName]: fieldName === 'roomType' ? {
@@ -51,9 +55,13 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
         setRooms([...rooms, getDefaultRoom()]);
     };
 
-    const handleRemoveRoom = (index: number) => {
+    const removeRoom = (index: number) => {
         const updatedRooms = rooms.filter((_, i) => i !== index);
         setRooms(updatedRooms);
+    };
+
+    const fileChange = (file: UploadFile, index: number) => {
+        roomChange(index, 'image', file?.name);
     };
 
     return (
@@ -75,7 +83,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                 <Input
                                     className='rooms__container-room__input'
                                     value={room?.name}
-                                    onChange={(e) => handleRoomChange(index, 'name', e.target.value)}
+                                    onChange={(e) => roomChange(index, 'name', e.target.value)}
                                 />
                             </Item>
                         </div>
@@ -89,7 +97,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                     labelInValue
                                     className='rooms__container-room__input-text'
                                     placeholder='Seleccionar Habitación'
-                                    onChange={(value) => handleRoomChange(index, 'roomType', value)}
+                                    onChange={(value) => roomChange(index, 'roomType', value)}
                                     value={room?.roomType?.value}
                                 >
                                     {typeRoomData.map(type => (
@@ -113,7 +121,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                     type="number"
                                     className='rooms__container-room__input'
                                     value={room?.price}
-                                    onChange={(e) => handleRoomChange(index, 'price', e.target.value)}
+                                    onChange={(e) => roomChange(index, 'price', e.target.value)}
                                 />
                             </Item>
                         </div>
@@ -126,7 +134,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                     type="number"
                                     className='rooms__container-room__input-text'
                                     value={room?.taxes}
-                                    onChange={(e) => handleRoomChange(index, 'taxes', e.target.value)}
+                                    onChange={(e) => roomChange(index, 'taxes', e.target.value)}
                                 />
                             </Item>
                         </div>
@@ -134,20 +142,9 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                             <Item
                                 name="images" label="Imágenes"
                                 className='rooms__content'>
-                                <Upload
-                                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                    listType="picture"
-                                    accept=".png,.jpg"
-                                    className='rooms__container-upload'
-                                    onChange={(info) => {
-                                        if (info.file.status === 'done') {
-                                            const imageUrl = info.file.name;
-                                            handleRoomChange(index, 'images', imageUrl);
-                                        }
-                                    }}
-                                >
-                                    <Button className='rooms__btn-upload' icon={<UploadOutlined />}>Cargar Foto</Button>
-                                </Upload>
+                                <FileUploaderComponent
+                                     onChange={(file) => fileChange(file, index)}
+                                />
                             </Item>
                         </div>
                         <div className="cell small-12 medium-5">
@@ -159,7 +156,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                     placeholder='Bogotá'
                                     className='rooms__container-room__input'
                                     value={room?.location}
-                                    onChange={(e) => handleRoomChange(index, 'location', e.target.value)}
+                                    onChange={(e) => roomChange(index, 'location', e.target.value)}
                                 />
                             </Item>
                         </div>
@@ -168,7 +165,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                 <div className='rooms__checkbox'>
                                     <Checkbox
                                         checked={room?.status}
-                                        onChange={(e) => handleRoomChange(index, 'status', e.target.checked)}
+                                        onChange={(e) => roomChange(index, 'status', e.target.checked)}
                                     >
                                         Activo
                                     </Checkbox>
@@ -181,7 +178,7 @@ const RoomsComponent: React.FC<RoomsComponentProps> = ({ updateRoomsData }) => {
                                     <Button
                                         icon={<DeleteOutlined />}
                                         className='rooms__delete-room'
-                                        onClick={() => handleRemoveRoom(index)}
+                                        onClick={() => removeRoom(index)}
                                     >
                                         Eliminar Habitación
                                     </Button>

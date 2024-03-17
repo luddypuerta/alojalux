@@ -1,5 +1,6 @@
 //Components
 import RoomsComponent from '../rooms/RoomsComponent';
+import FileUploaderComponent from '../../../../components/upload-file/UploadFile.component';
 
 //Interfaces
 import { HotelInterface, PackageInterface, hotelInitialValues } from '../../../../utils/interfaces/hotels/HotelDataInterface';
@@ -7,10 +8,9 @@ import { RoomInterface } from '../../../../utils/interfaces/rooms/RoomDataInterf
 
 //Libraries
 import React, { useEffect, useState } from 'react';
-import { Modal, Steps, Form, Input, InputNumber, Checkbox, Tag, Button, Upload, message } from 'antd';
+import { Modal, Steps, Form, Input, InputNumber, Checkbox, Tag, Button } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import type { UploadProps } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadFile } from "antd/lib/upload/interface";
 
 //Services
 import { createHotelService, updateHotelService } from '../../../../services/hotels/hotelsService';
@@ -111,14 +111,14 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
         }
     }
 
-    const handleChange = (fieldName: string, value: any) => {
+    const hotelFieldsChange = (fieldName: string, value: any) => {
         setHotelData({
             ...hotelData,
             [fieldName]: value
         });
     };
 
-    const handleAddPackage = () => {
+    const addHotelPackage = () => {
         if (newPackage.trim() !== '') {
             const newPackageObj: PackageInterface = {
                 id: uuidv4(),
@@ -132,38 +132,24 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
         }
     };
 
-    const handleRemovePackage = (packageToRemoveId: string) => {
+    const removeHotelPackage = (packageToRemoveId: string) => {
         const updatedPackages: PackageInterface[] = hotelData.packagesIncluded.filter((packageItem) => packageItem.id !== packageToRemoveId);
         setHotelData({
             ...hotelData,
             packagesIncluded: updatedPackages
         });
     };
-
-    const props: UploadProps = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file && info.file.status === 'done' && info.file.response) {
-                const imageUrl = info.file.name;
-                setHotelData({
-                    ...hotelData,
-                    image: imageUrl
-                });
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
-
     const updateRoomsData = (updatedRooms: RoomInterface[]) => {
         setRoomsData(updatedRooms);
     };
 
+    const fileChange = (file: UploadFile) => {
+        setHotelData({
+            ...hotelData,
+            image: file?.name ?? ''
+        });
+    };
+    
     return (
         <Modal
             open={open}
@@ -188,7 +174,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                         <Input 
                                             className='hotels-modal__content__input' 
                                             value={hotelData?.name}
-                                            onChange={(e) => handleChange('name', e.target.value)} />
+                                            onChange={(e) => hotelFieldsChange('name', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-6">
@@ -197,7 +183,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                             placeholder='Bogotá'
                                             className='hotels-modal__content__input-text'
                                             value={hotelData.location} 
-                                            onChange={(e) => handleChange('location', e.target.value)} />
+                                            onChange={(e) => hotelFieldsChange('location', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-12">
@@ -206,7 +192,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                             className='hotels-modal__content__input-text'
                                             placeholder='¡Relájate junto al mar!'
                                             value={hotelData.title}
-                                            onChange={(e) => handleChange('title', e.target.value)}
+                                            onChange={(e) => hotelFieldsChange('title', e.target.value)}
                                         />
                                     </Item>
                                 </div>
@@ -215,7 +201,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                         <Input.TextArea
                                             placeholder='¡Relájate y rejuvenece en nuestro resort frente al mar en Barranquilla.!'
                                             value={hotelData.description} 
-                                            onChange={(e) => handleChange('description', e.target.value)} />
+                                            onChange={(e) => hotelFieldsChange('description', e.target.value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-12 medium-12">
@@ -223,7 +209,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                         <Input.TextArea
                                             value={hotelData.textOffer}
                                             placeholder='¡Reserva ahora y obtén un masaje relajante de cortesía!'
-                                            onChange={(e) => handleChange('textOffer', e.target.value)}
+                                            onChange={(e) => hotelFieldsChange('textOffer', e.target.value)}
                                         />
                                     </Item>
                                 </div>
@@ -231,14 +217,14 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                     <Item label="Precio" name="price" className='hotels-modal__content'>
                                         <InputNumber
                                             placeholder='000000'
-                                            value={hotelData.price} onChange={(value) => handleChange('price', value)} />
+                                            value={hotelData.price} onChange={(value) => hotelFieldsChange('price', value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-3 medium-3">
                                     <Item label="Estrellas" name="stars" className='hotels-modal__content'>
                                         <InputNumber
                                             placeholder='1'
-                                            value={hotelData.stars} onChange={(value) => handleChange('stars', value)} />
+                                            value={hotelData.stars} onChange={(value) => hotelFieldsChange('stars', value)} />
                                     </Item>
                                 </div>
                                 <div className="cell small-3 medium-3">
@@ -246,7 +232,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                         <div className='hotels-modal__content__checkbox'>
                                             <Checkbox
                                                 checked={hotelData.status}
-                                                onChange={(e) => handleChange('status', e.target.checked)}
+                                                onChange={(e) => hotelFieldsChange('status', e.target.checked)}
                                             >
                                                 Activo
                                             </Checkbox>
@@ -259,13 +245,13 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                             <Input
                                                 value={newPackage}
                                                 onChange={(e) => setNewPackage(e.target.value)}
-                                                onPressEnter={handleAddPackage}
-                                                onBlur={handleAddPackage}
+                                                onPressEnter={addHotelPackage}
+                                                onBlur={addHotelPackage}
                                                 className='hotels-modal__input-package'
                                                 placeholder="Agregar paquete, Ej: Wifi gratuito"
                                             />
                                             <Button type="primary"
-                                                onClick={handleAddPackage}
+                                                onClick={addHotelPackage}
                                                 className='hotels-modal__btn-package'>
                                                 Añadir
                                             </Button>
@@ -274,7 +260,7 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                                     <Tag
                                                         key={index}
                                                         closable
-                                                        onClose={() => handleRemovePackage(item?.id)}
+                                                        onClose={() => removeHotelPackage(item?.id)}
                                                     >
                                                         {item?.name}
                                                     </Tag>
@@ -285,14 +271,9 @@ const HotelModalComponent: React.FC<HotelModalComponentProps> = (
                                 </div>
                                 <div className="cell small-12 medium-6">
                                     <Item label="Imagen" name="image" className='hotels-modal__content'>
-                                        <Upload {...props}
-                                            listType="picture"
-                                            maxCount={1}
-                                            accept=".png,.jpg"
-                                            className='hotels-modal__container-upload'
-                                        >
-                                            <Button className='hotels-modal__btn-upload' icon={<UploadOutlined />}>Cargar Foto</Button>
-                                        </Upload>
+                                        <FileUploaderComponent
+                                            onChange={fileChange}
+                                        />
                                     </Item>
                                 </div>
                             </div>

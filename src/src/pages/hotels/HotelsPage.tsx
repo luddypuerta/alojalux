@@ -37,7 +37,8 @@ const HotelsPage: React.FC = () => {
         dispatch<any>(getHotels());
     }, [dispatch]);
 
-    const openModalHotel = () => {
+    const addHotel = () => {
+        dispatchRoom(resetRoom());
         setModalHotelVisible(true);
         setIsAdding(true);
     };
@@ -54,12 +55,11 @@ const HotelsPage: React.FC = () => {
     }
 
     const closeModalHotel = () => {
-        dispatchRoom(resetRoom());
         dispatch<any>(getHotels());
         setModalHotelVisible(false);
     };
 
-    const handleHotelChange = (value: string) => {
+    const hotelChange = (value: string) => {
         setSelectedHotel(value);
     };
 
@@ -85,7 +85,7 @@ const HotelsPage: React.FC = () => {
             <div className='grid-x align-center'>
                 <button
                     className='hotels-page__button-add button'
-                    onClick={openModalHotel}>
+                    onClick={addHotel}>
                     Agregar Hotel
                 </button>
             </div>
@@ -93,7 +93,7 @@ const HotelsPage: React.FC = () => {
             <Select
                 className='hotels-page__hotel-selector'
                 placeholder='Seleccionar hotel'
-                onChange={handleHotelChange}
+                onChange={hotelChange}
                 value={selectedHotel}
             >
                 <Option

@@ -42,12 +42,12 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
     ]);
     const [contactValues, setContactValues] = useState<EmergencyContactInterface>({ name: '', phone: '' });
 
-    const handleAddGuest = () => {
+    const addGuest = () => {
         const newId = guests.length + 1;
         setGuests([...guests, { id: newId, name: '', documentType: '', documentNumber: '', birthdate: '', gender: '', email: '', telephone: '' }]);
     };
 
-    const handleSetTitular = (id: number) => {
+    const setTitularBooking = (id: number) => {
         const updatedGuests = guests.map(guest => ({
             ...guest,
             isTitular: guest.id === id
@@ -55,7 +55,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
         setGuests(updatedGuests);
     };
 
-    const handleDeleteGuest = (id: number) => {
+    const deleteGuest = (id: number) => {
         const isTitular = guests.find(guest => guest.id === id)?.isTitular;
         const updatedGuests = guests.filter(guest => guest.id !== id);
         if (isTitular && updatedGuests.length > 0) {
@@ -90,7 +90,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
         return body;
     };
 
-    const handleFinish = async (values: BookingInterface) => {
+    const changesFinalized = async (values: BookingInterface) => {
         setLoading(true);
         try {
             const dataCreateBooking = bookingRoom(values);
@@ -116,7 +116,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
             footer={null}
             className='modal-cards'
         >
-            <Form form={form} onFinish={handleFinish} layout="vertical">
+            <Form form={form} onFinish={changesFinalized} layout="vertical">
                 <div className='grid-container modal-cards__container'>
                     <div className="cell small-12">
                         <h5 className='modal-cards__title'>Datos de los Huéspedes</h5>
@@ -218,13 +218,13 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
                                 <Checkbox
                                     className='modal-cards__input'
                                     checked={guest.isTitular}
-                                    onChange={() => handleSetTitular(guest.id)}>
+                                    onChange={() => setTitularBooking(guest.id)}>
                                     Titular de la reserva
                                 </Checkbox>
                             </div>
                             {guest.id > 1 && (
                                 <div className="modal-cards__btn-delete" style={{ marginTop: '32px' }}>
-                                    <Button onClick={() => handleDeleteGuest(guest.id)}>
+                                    <Button onClick={() => deleteGuest(guest.id)}>
                                         <DeleteOutlined /> Eliminar huésped
                                     </Button>
                                 </div>
@@ -234,7 +234,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
                     <div className="cell small-12" style={{ textAlign: 'right' }}>
                         <Button
                             className='modal-cards__add-guest'
-                            type="primary" onClick={handleAddGuest}>Agregar Huésped</Button>
+                            type="primary" onClick={addGuest}>Agregar Huésped</Button>
                     </div>
                     <div className="cell small-12">
                         <h5 className='modal-cards__title'>Datos de Contacto de Emergencia</h5>
