@@ -87,7 +87,7 @@ const RoomDetailsComponent: React.FC = () => {
                                     />
                                 </div>
                                 <div className="room-details__info">
-                                    <h4>{room.name}</h4>
+                                    <h5 className="room-details__info__title">{room.name}</h5>
                                     <div className="room-details__amenities">
                                         {room.packagesIncluded.map((packageItem, index) => (
                                             <div className="room-details__amenity" key={index}>

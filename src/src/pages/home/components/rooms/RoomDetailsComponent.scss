@@ -28,6 +28,10 @@
     &__info {
         padding: 20px;
         color: #34495E;
+        
+        &__title {
+            font-weight: bold;
+        }
     }
 
     &__button {

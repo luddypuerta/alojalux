@@ -34,7 +34,7 @@ const SwipeableCardsComponent: React.FC<SwipeableCardsProps> = ({ cards }) => {
                         <div key={index} className={`small-12 medium-${12 / getSlidesToShow()} cards-container__card`}>
                             <Card
                                 className='cards-container__card__image'
-                                style={{ backgroundImage: `url(/assets/images/${card.image})` }}
+                                style={{ backgroundImage: `url(/assets/images/hotels/${card.image})` }}
                             >
                             </Card>
                             <div className="cards-container__card__content">
