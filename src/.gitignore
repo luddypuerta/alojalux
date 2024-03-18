@@ -3,7 +3,7 @@ node_modules/
 dist/
 .cache/
 .build/
-.env
+# .env
 
 # Ignore IDE and editor configuration files
 .vscode/
