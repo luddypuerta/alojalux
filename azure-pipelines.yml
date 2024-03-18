@@ -39,7 +39,7 @@ steps:
   displayName: 'Archive react-app'
   inputs:
     rootFolderOrFile: "src/build"
-    includeRootFolder: true
+    includeRootFolder: false
     
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
