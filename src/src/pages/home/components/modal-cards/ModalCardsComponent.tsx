@@ -144,7 +144,7 @@ const ModalCardsComponent: React.FC<ModalCardsComponentProps> = ({ open, onCance
                                     <DatePicker
                                         className='modal-cards__input'
                                         style={{ width: '100%' }}
-                                        onChange={(date, dateString) => {
+                                        onChange={(_, dateString) => {
                                             if (typeof dateString === 'string') {
                                                 setGuests(guests.map(g => g.id === guest.id ? { ...g, birthdate: dateString } : g))
                                             }

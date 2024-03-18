@@ -26,7 +26,6 @@ import ErrorAlertComponent from '../../utils/alerts/error-alert.component';
 import { CardSiteInterface } from '../../utils/interfaces/home/CardDataInterface';
 
 const { RangePicker } = DatePicker;
-const getCurrentDate = () => dayjs();
 const { Option } = Select;
 
 const HomePage: React.FC = () => {
